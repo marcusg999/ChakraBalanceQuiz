@@ -1,0 +1,707 @@
+<html><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Chakra Balance Advisor</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+    .container {
+        background-color: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        max-width: 600px;
+        width: 100%;
+    }
+    header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .header-image {
+        max-width: 200px;
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+    h1 {
+        color: #333;
+        margin-bottom: 30px;
+    }
+    .question {
+        margin-bottom: 20px;
+    }
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #555;
+    }
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 16px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+        background-repeat: no-repeat;
+        background-position-x: 98%;
+        background-position-y: 50%;
+    }
+    button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    #results {
+        margin-top: 30px;
+    }
+    .chakra-result {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+    }
+    .chakra-result h3 {
+        margin-top: 0;
+        color: #333;
+    }
+    .chakra-result p {
+        margin-bottom: 10px;
+    }
+    .chakra-result ul {
+        padding-left: 20px;
+    }
+    .chakra-icon {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+    @media (max-width: 600px) {
+        body {
+            padding: 10px;
+        }
+        .container {
+            padding: 20px;
+        }
+        .header-image {
+            max-width: 150px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        label {
+            font-size: 14px;
+        }
+        select {
+            font-size: 14px;
+        }
+        button {
+            font-size: 16px;
+        }
+        .chakra-result {
+            padding: 10px;
+        }
+        .chakra-result h3 {
+            font-size: 18px;
+        }
+        .chakra-result p, .chakra-result ul {
+            font-size: 14px;
+        }
+        .chakra-icon {
+            width: 30px;
+            height: 30px;
+        }
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <img src="https://chakrabalance.com/lotus-pose.svg" alt="Woman sitting in lotus yoga position" class="header-image">
+            <h1>Chakra Balance Advisor</h1>
+        </header>
+        <div id="questionnaire">
+            <div class="question">
+                <label for="q1">How grounded and secure do you feel in your daily life?</label>
+                <select id="q1">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very insecure and ungrounded</option>
+                    <option value="2">Somewhat insecure</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly grounded</option>
+                    <option value="5">Very grounded and secure</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q2">How satisfied are you with your emotional well-being and relationships?</label>
+                <select id="q2">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very unsatisfied</option>
+                    <option value="2">Somewhat unsatisfied</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly satisfied</option>
+                    <option value="5">Very satisfied</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q3">How confident do you feel in your personal power and self-esteem?</label>
+                <select id="q3">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very unconfident</option>
+                    <option value="2">Somewhat unconfident</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly confident</option>
+                    <option value="5">Very confident</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q4">How open is your heart to giving and receiving love?</label>
+                <select id="q4">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very closed</option>
+                    <option value="2">Somewhat closed</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly open</option>
+                    <option value="5">Very open</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q5">How effectively do you communicate your thoughts and feelings?</label>
+                <select id="q5">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very ineffectively</option>
+                    <option value="2">Somewhat ineffectively</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly effectively</option>
+                    <option value="5">Very effectively</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q6">How clear is your intuition and ability to see the bigger picture?</label>
+                <select id="q6">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very unclear</option>
+                    <option value="2">Somewhat unclear</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly clear</option>
+                    <option value="5">Very clear</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q7">How connected do you feel to your spiritual self and the universe?</label>
+                <select id="q7">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very disconnected</option>
+                    <option value="2">Somewhat disconnected</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly connected</option>
+                    <option value="5">Very connected</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q8">How often do you feel anxious or fearful in your daily life?</label>
+                <select id="q8">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very often</option>
+                    <option value="2">Often</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Rarely</option>
+                    <option value="5">Almost never</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q9">How comfortable are you with change and new experiences?</label>
+                <select id="q9">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very uncomfortable</option>
+                    <option value="2">Somewhat uncomfortable</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly comfortable</option>
+                    <option value="5">Very comfortable</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q10">How often do you practice self-care or self-love?</label>
+                <select id="q10">
+                    <option value="">Select an answer</option>
+                    <option value="1">Never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q11">How trusting are you of the universe to provide for you?</label>
+                <select id="q11">
+                    <option value="">Select an answer</option>
+                    <option value="1">Not at all trusting</option>
+                    <option value="2">Somewhat trusting</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly trusting</option>
+                    <option value="5">Very trusting</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q12">How often do you engage in meditation or mindfulness practices?</label>
+                <select id="q12">
+                    <option value="">Select an answer</option>
+                    <option value="1">Never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q13">How do you feel about your ability to manifest your desires?</label>
+                <select id="q13">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very ineffective</option>
+                    <option value="2">Somewhat ineffective</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly effective</option>
+                    <option value="5">Very effective</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q14">How often do you feel gratitude in your life?</label>
+                <select id="q14">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q15">How at ease do you feel in social situations?</label>
+                <select id="q15">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very uneasy</option>
+                    <option value="2">Somewhat uneasy</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly at ease</option>
+                    <option value="5">Very at ease</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q16">How often do you take time to reflect on your thoughts and feelings?</label>
+                <select id="q16">
+                    <option value="">Select an answer</option>
+                    <option value="1">Never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q17">How much do you value your individuality and self-expression?</label>
+                <select id="q17">
+                    <option value="">Select an answer</option>
+                    <option value="1">Not at all</option>
+                    <option value="2">Somewhat</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly</option>
+                    <option value="5">Very much</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q18">How often do you seek new knowledge or experiences?</label>
+                <select id="q18">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q19">How often do you feel a sense of belonging in your community?</label>
+                <select id="q19">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q20">How connected do you feel to your body?</label>
+                <select id="q20">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very disconnected</option>
+                    <option value="2">Somewhat disconnected</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly connected</option>
+                    <option value="5">Very connected</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q21">How often do you feel a sense of compassion for others?</label>
+                <select id="q21">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q22">How often do you feel inspired or motivated?</label>
+                <select id="q22">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q23">How comfortable are you expressing your emotions?</label>
+                <select id="q23">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very uncomfortable</option>
+                    <option value="2">Somewhat uncomfortable</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly comfortable</option>
+                    <option value="5">Very comfortable</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q24">How often do you experience joy in your daily life?</label>
+                <select id="q24">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q25">How often do you feel a sense of purpose in your life?</label>
+                <select id="q25">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q26">How often do you feel connected to nature?</label>
+                <select id="q26">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q27">How often do you feel a sense of unity with the world around you?</label>
+                <select id="q27">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q28">How often do you feel overwhelmed by your responsibilities?</label>
+                <select id="q28">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very often</option>
+                    <option value="2">Often</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Rarely</option>
+                    <option value="5">Almost never</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q29">How satisfied are you with your ability to set and maintain boundaries?</label>
+                <select id="q29">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very unsatisfied</option>
+                    <option value="2">Somewhat unsatisfied</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly satisfied</option>
+                    <option value="5">Very satisfied</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q30">How often do you engage in activities that bring you joy?</label>
+                <select id="q30">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q31">How comfortable are you with silence and solitude?</label>
+                <select id="q31">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very uncomfortable</option>
+                    <option value="2">Somewhat uncomfortable</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly comfortable</option>
+                    <option value="5">Very comfortable</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q32">How often do you feel a sense of awe or wonder about the world?</label>
+                <select id="q32">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q33">How satisfied are you with your ability to make decisions?</label>
+                <select id="q33">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very unsatisfied</option>
+                    <option value="2">Somewhat unsatisfied</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly satisfied</option>
+                    <option value="5">Very satisfied</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q34">How often do you feel a sense of inner peace?</label>
+                <select id="q34">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q35">How comfortable are you with uncertainty and change?</label>
+                <select id="q35">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very uncomfortable</option>
+                    <option value="2">Somewhat uncomfortable</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly comfortable</option>
+                    <option value="5">Very comfortable</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q36">How often do you feel connected to your life's purpose?</label>
+                <select id="q36">
+                    <option value="">Select an answer</option>
+                    <option value="1">Almost never</option>
+                    <option value="2">Rarely</option>
+                    <option value="3">Sometimes</option>
+                    <option value="4">Often</option>
+                    <option value="5">Very often</option>
+                </select>
+            </div>
+            <div class="question">
+                <label for="q37">How satisfied are you with your ability to listen to and trust your intuition?</label>
+                <select id="q37">
+                    <option value="">Select an answer</option>
+                    <option value="1">Very unsatisfied</option>
+                    <option value="2">Somewhat unsatisfied</option>
+                    <option value="3">Neutral</option>
+                    <option value="4">Fairly satisfied</option>
+                    <option value="5">Very satisfied</option>
+                </select>
+            </div>
+            
+            <button onclick="analyzeChakras()">Analyze My Chakras</button>
+        </div>
+        <div id="results"></div>
+    </div>
+
+    <script>
+        const chakras = [
+            {
+                name: "Root Chakra (Muladhara)",
+                color: "#FF0000",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FF0000"/><path d="M50 20 L20 80 L80 80 Z" fill="#FFFFFF"/></svg>`,
+                advice: [
+                    "Practice grounding exercises like walking barefoot in nature",
+                    "Eat root vegetables and proteins",
+                    "Use affirmations focused on safety and security",
+                    "Engage in physical exercise to feel more connected to your body"
+                ]
+            },
+            {
+                name: "Sacral Chakra (Svadhisthana)",
+                color: "#FFA500",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FFA500"/><circle cx="50" cy="50" r="20" fill="#FFFFFF"/></svg>`,
+                advice: [
+                    "Express yourself creatively through art, dance, or music",
+                    "Practice hip-opening yoga poses",
+                    "Spend time near water",
+                    "Explore your emotions through journaling"
+                ]
+            },
+            {
+                name: "Solar Plexus Chakra (Manipura)",
+                color: "#FFFF00",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#FFFF00"/><polygon points="50,20 20,80 80,80" fill="#FFFFFF"/></svg>`,
+                advice: [
+                    "Practice power poses to boost confidence",
+                    "Set and achieve small goals to build self-esteem",
+                    "Engage in core-strengthening exercises",
+                    "Use positive affirmations focused on personal power"
+                ]
+            },
+            {
+                name: "Heart Chakra (Anahata)",
+                color: "#00FF00",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#00FF00"/><path d="M50 30 Q30 10 10 30 T50 70 T90 30 T50 30" fill="#FFFFFF"/></svg>`,
+                advice: [
+                    "Practice loving-kindness meditation",
+                    "Perform random acts of kindness",
+                    "Spend time in nature",
+                    "Practice forgiveness and self-love"
+                ]
+            },
+            {
+                name: "Throat Chakra (Vishuddha)",
+                color: "#0000FF",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#0000FF"/><circle cx="50" cy="50" r="25" fill="#FFFFFF"/><circle cx="50" cy="50" r="15" fill="#0000FF"/></svg>`,
+                advice: [
+                    "Practice speaking your truth in a journal",
+                    "Sing or chant to exercise your voice",
+                    "Try neck and shoulder stretches",
+                    "Express yourself through writing or public speaking"
+                ]
+            },
+            {
+                name: "Third Eye Chakra (Ajna)",
+                color: "#4B0082",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#4B0082"/><circle cx="50" cy="50" r="15" fill="#FFFFFF"/></svg>`,
+                advice: [
+                    "Practice meditation and mindfulness",
+                    "Engage in visualization exercises",
+                    "Trust your intuition in daily decisions",
+                    "Reduce screen time and practice eye exercises"
+                ]
+            },
+            {
+                name: "Crown Chakra (Sahasrara)",
+                color: "#9400D3",
+                icon: `<svg class="chakra-icon" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#9400D3"/><circle cx="50" cy="50" r="30" fill="#FFFFFF"/><circle cx="50" cy="50" r="15" fill="#9400D3"/></svg>`,
+                advice: [
+                    "Practice silent meditation",
+                    "Explore spiritual teachings and philosophies",
+                    "Spend time in quiet reflection",
+                    "Connect with nature and the universe around you"
+                ]
+            }
+        ];
+
+        function analyzeChakras() {
+            const results = document.getElementById('results');
+            results.innerHTML = '';
+
+            const scores = [];
+            for (let i = 1; i <= 37; i++) {
+                const score = parseInt(document.getElementById(`q${i}`).value);
+                if (isNaN(score)) {
+                    alert("Please answer all questions before analyzing.");
+                    return;
+                }
+                scores.push(score);
+            }
+
+            const chakraScores = [
+                scores.slice(0, 5),
+                scores.slice(5, 10),
+                scores.slice(10, 15),
+                scores.slice(15, 21),
+                scores.slice(21, 26),
+                scores.slice(26, 32),
+                scores.slice(32)
+            ];
+
+            let allBalanced = true;
+
+            chakraScores.forEach((chakraScore, index) => {
+                const averageScore = chakraScore.reduce((a, b) => a + b, 0) / chakraScore.length;
+                if (averageScore <= 3) {
+                    allBalanced = false;
+                    const chakra = chakras[index];
+                    const resultDiv = document.createElement('div');
+                    resultDiv.className = 'chakra-result';
+                    resultDiv.style.borderLeft = `5px solid ${chakra.color}`;
+                    
+                    resultDiv.innerHTML = `
+                        <h3>${chakra.icon} ${chakra.name}</h3>
+                        <p>This chakra may need balancing. Here are some tips:</p>
+                        <ul>
+                            ${chakra.advice.map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    `;
+                    
+                    results.appendChild(resultDiv);
+                }
+            });
+
+            if (allBalanced) {
+                if (confirm("Perhaps you can be more honest with yourself. Do you want to take the quiz again?")) {
+                    resetQuiz();
+                } else {
+                    results.innerHTML = '<p>All your chakras seem to be well-balanced. Keep up your current practices to maintain this harmony.</p>';
+                }
+            } else if (results.children.length === 0) {
+                results.innerHTML = '<p>Great job! All your chakras seem to be well-balanced. Keep up your current practices to maintain this harmony.</p>';
+            }
+        }
+
+        function resetQuiz() {
+            for (let i = 1; i <= 37; i++) {
+                document.getElementById(`q${i}`).value = "";
+            }
+            document.getElementById('results').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
