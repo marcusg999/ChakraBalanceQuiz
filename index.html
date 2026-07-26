@@ -3,1189 +3,655 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Chakra Balance Advisor</title>
+<meta name="theme-color" content="#0d0b18">
+<meta name="description" content="A 37-question chakra assessment to reveal which of your seven energy centres may need attention — with guidance to bring them back into balance.">
+<title>Chakra Balance · Energy Assessment</title>
 <style>
 /* ─── Design Tokens ──────────────────────────────────────────────── */
 :root {
-  /* Typography scale */
-  --font-base:  'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
   --fs-xs:   0.75rem;
   --fs-sm:   0.875rem;
   --fs-md:   1rem;
   --fs-lg:   1.125rem;
   --fs-xl:   1.375rem;
-  --fs-2xl:  1.75rem;
-  --fs-3xl:  2.25rem;
+  --fs-2xl:  1.875rem;
+  --fs-3xl:  2.5rem;
+  --fs-4xl:  3.25rem;
 
-  /* Spacing */
-  --sp-1: 0.25rem;
-  --sp-2: 0.5rem;
-  --sp-3: 0.75rem;
-  --sp-4: 1rem;
-  --sp-5: 1.25rem;
-  --sp-6: 1.5rem;
-  --sp-8: 2rem;
-  --sp-10: 2.5rem;
-  --sp-12: 3rem;
+  --sp-1: 0.25rem;  --sp-2: 0.5rem;  --sp-3: 0.75rem;  --sp-4: 1rem;
+  --sp-5: 1.25rem;  --sp-6: 1.5rem;  --sp-8: 2rem;     --sp-10: 2.5rem;
+  --sp-12: 3rem;    --sp-16: 4rem;
 
-  /* Radius */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
-  --radius-full: 9999px;
+  --radius-sm: 10px;  --radius-md: 16px;  --radius-lg: 24px;  --radius-full: 9999px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Transition */
-  --transition: 0.25s ease;
-
-  /* Light-mode colours */
-  --bg-page:    #f0edf8;
-  --bg-card:    #ffffff;
-  --bg-card-2:  #f7f5fd;
-  --bg-input:   #f0edf8;
-  --border:     #e0d9f5;
-  --text-primary:   #1a1030;
-  --text-secondary: #5e4f80;
-  --text-muted:     #8e80a8;
+  /* Light "dawn" theme */
+  --bg-base:    #f4f1fb;
+  --bg-glow-1:  rgba(167,139,250,0.35);
+  --bg-glow-2:  rgba(244,114,182,0.22);
+  --bg-glow-3:  rgba(96,165,250,0.20);
+  --surface:    rgba(255,255,255,0.72);
+  --surface-2:  rgba(255,255,255,0.55);
+  --surface-solid: #ffffff;
+  --border:     rgba(124,58,237,0.16);
+  --border-strong: rgba(124,58,237,0.32);
+  --text-primary:   #241a3d;
+  --text-secondary: #5a4d78;
+  --text-muted:     #897ea8;
   --accent:     #7c3aed;
-  --accent-hover:#6d28d9;
-  --accent-light:#ede9fe;
-  --shadow-card: 0 4px 24px rgba(124,58,237,0.10);
-  --shadow-hover: 0 8px 32px rgba(124,58,237,0.18);
-  --progress-bg: #e0d9f5;
-  --toggle-bg:  #e0d9f5;
+  --accent-soft: rgba(124,58,237,0.12);
+  --shadow-card: 0 18px 50px -22px rgba(80,40,140,0.45);
+  --shadow-soft: 0 8px 28px -14px rgba(80,40,140,0.35);
+  --track:      rgba(124,58,237,0.14);
+  --scrim:      rgba(255,255,255,0.6);
 }
 
-/* Dark mode tokens */
 [data-theme="dark"] {
-  --bg-page:    #0f0d1a;
-  --bg-card:    #1c1830;
-  --bg-card-2:  #251f3e;
-  --bg-input:   #2a2348;
-  --border:     #3a3060;
-  --text-primary:   #f0edf8;
-  --text-secondary: #c4b5fd;
-  --text-muted:     #8b7db8;
+  --bg-base:    #0b0916;
+  --bg-glow-1:  rgba(124,58,237,0.34);
+  --bg-glow-2:  rgba(236,72,153,0.20);
+  --bg-glow-3:  rgba(37,99,235,0.24);
+  --surface:    rgba(28,23,48,0.66);
+  --surface-2:  rgba(38,31,64,0.55);
+  --surface-solid: #17132a;
+  --border:     rgba(167,139,250,0.18);
+  --border-strong: rgba(167,139,250,0.38);
+  --text-primary:   #f2eefb;
+  --text-secondary: #cbbdf3;
+  --text-muted:     #928bb8;
   --accent:     #a78bfa;
-  --accent-hover:#c4b5fd;
-  --accent-light:#2e2060;
-  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
-  --shadow-hover: 0 8px 32px rgba(167,139,250,0.25);
-  --progress-bg: #2a2348;
-  --toggle-bg:  #2a2348;
+  --accent-soft: rgba(167,139,250,0.16);
+  --shadow-card: 0 24px 60px -24px rgba(0,0,0,0.75);
+  --shadow-soft: 0 12px 34px -18px rgba(0,0,0,0.6);
+  --track:      rgba(167,139,250,0.16);
+  --scrim:      rgba(11,9,22,0.6);
 }
 
 /* ─── Reset & Base ───────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
 body {
-  font-family: var(--font-base);
+  font-family: var(--font-body);
   font-size: var(--fs-md);
   line-height: 1.6;
   color: var(--text-primary);
-  background: var(--bg-page);
+  background: var(--bg-base);
   min-height: 100vh;
-  padding: env(safe-area-inset-top, var(--sp-4))
-           env(safe-area-inset-right, var(--sp-4))
-           env(safe-area-inset-bottom, var(--sp-6))
-           env(safe-area-inset-left, var(--sp-4));
-  padding-top: var(--sp-6);
-  padding-bottom: var(--sp-8);
+  min-height: 100dvh;
+  overflow-x: hidden;
   transition: background var(--transition), color var(--transition);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* ─── Layout ─────────────────────────────────────────────────────── */
-.page-wrapper {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 0 var(--sp-4);
-}
-
-/* ─── Header ─────────────────────────────────────────────────────── */
-.site-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  margin-bottom: var(--sp-8);
-  gap: var(--sp-4);
-}
-
-.header-content { text-align: center; }
-
-.header-mandala {
-  animation: spin-slow 20s linear infinite;
-}
-
-.site-title {
-  font-size: var(--fs-2xl);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  background: linear-gradient(135deg, #7c3aed, #ec4899);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  line-height: 1.2;
-}
-
-[data-theme="dark"] .site-title {
-  background: linear-gradient(135deg, #a78bfa, #f472b6);
-  -webkit-background-clip: text;
-  background-clip: text;
-}
-
-.site-subtitle {
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
-  margin-top: var(--sp-1);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-/* ─── Dark-mode toggle ───────────────────────────────────────────── */
-.theme-toggle {
-  position: absolute;
-  right: 0;
-  top: 0;
-  background: var(--toggle-bg);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-full);
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 1.2rem;
-  transition: background var(--transition), transform 0.2s;
-  flex-shrink: 0;
-}
-.theme-toggle:hover { transform: scale(1.1); }
-
-/* ─── Card ───────────────────────────────────────────────────────── */
-.card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: var(--sp-8);
-  box-shadow: var(--shadow-card);
-  border: 1px solid var(--border);
-  transition: background var(--transition), box-shadow var(--transition);
-}
-
-/* ─── Progress bar ───────────────────────────────────────────────── */
-.progress-wrap {
-  margin-bottom: var(--sp-6);
-}
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
-  margin-bottom: var(--sp-2);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.progress-bar-track {
-  height: 6px;
-  background: var(--progress-bg);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #7c3aed, #ec4899);
-  border-radius: var(--radius-full);
-  transition: width 0.4s ease;
-  width: 0%;
-}
-
-/* ─── Question ───────────────────────────────────────────────────── */
-.question {
-  margin-bottom: var(--sp-5);
-}
-
-.question label {
-  display: block;
-  margin-bottom: var(--sp-2);
-  font-size: var(--fs-sm);
-  font-weight: 600;
-  color: var(--text-secondary);
-  line-height: 1.4;
-}
-
-.question-number {
-  display: inline-block;
-  background: var(--accent-light);
-  color: var(--accent);
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  border-radius: var(--radius-full);
-  padding: 1px var(--sp-2);
-  margin-right: var(--sp-2);
-  min-width: 26px;
-  text-align: center;
-}
-
-.select-wrap {
-  position: relative;
-}
-
-.select-wrap::after {
-  content: "";
+/* Ambient aurora background */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
   pointer-events: none;
-  position: absolute;
-  right: var(--sp-4);
-  top: 50%;
-  transform: translateY(-50%);
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 7px solid var(--text-muted);
+  background:
+    radial-gradient(60% 50% at 15% 8%, var(--bg-glow-1), transparent 60%),
+    radial-gradient(55% 45% at 88% 20%, var(--bg-glow-3), transparent 62%),
+    radial-gradient(70% 60% at 50% 108%, var(--bg-glow-2), transparent 65%);
+  animation: drift 26s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  from { transform: translate3d(0,0,0) scale(1); }
+  to   { transform: translate3d(0,-2%,0) scale(1.08); }
 }
 
-select {
-  width: 100%;
-  padding: var(--sp-3) var(--sp-10) var(--sp-3) var(--sp-4);
-  background: var(--bg-input);
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius-sm);
-  font-size: var(--fs-md);
-  font-family: var(--font-base);
-  color: var(--text-primary);
-  appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
-  transition: border-color var(--transition), box-shadow var(--transition);
-  outline: none;
+.page {
+  max-width: 660px;
+  margin: 0 auto;
+  padding:
+    calc(env(safe-area-inset-top, 0px) + var(--sp-6))
+    calc(env(safe-area-inset-right, 0px) + var(--sp-5))
+    calc(env(safe-area-inset-bottom, 0px) + var(--sp-10))
+    calc(env(safe-area-inset-left, 0px) + var(--sp-5));
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
-select:focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(124,58,237,0.18);
-}
-
-select.answered {
-  border-color: var(--accent);
-  background: var(--accent-light);
-}
-
-/* ─── Divider ────────────────────────────────────────────────────── */
-.section-divider {
-  height: 1px;
-  background: var(--border);
-  margin: var(--sp-6) 0;
-}
-
-/* ─── Submit button ──────────────────────────────────────────────── */
-.btn-primary {
-  display: block;
-  width: 100%;
-  padding: var(--sp-4) var(--sp-6);
-  background: linear-gradient(135deg, #7c3aed, #6d28d9);
-  color: #fff;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: var(--fs-lg);
-  font-weight: 700;
-  font-family: var(--font-base);
-  cursor: pointer;
-  letter-spacing: 0.02em;
-  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 4px 18px rgba(124,58,237,0.35);
-  margin-top: var(--sp-6);
-}
-.btn-primary:hover {
-  opacity: 0.92;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 24px rgba(124,58,237,0.45);
-}
-.btn-primary:active { transform: translateY(0); }
-
-.btn-secondary {
-  display: inline-flex;
+/* ─── Top bar ────────────────────────────────────────────────────── */
+.topbar {
+  display: flex;
   align-items: center;
-  gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-5);
-  background: var(--bg-card-2);
-  color: var(--accent);
-  border: 1.5px solid var(--accent);
-  border-radius: var(--radius-md);
-  font-size: var(--fs-md);
-  font-weight: 600;
-  font-family: var(--font-base);
-  cursor: pointer;
-  letter-spacing: 0.01em;
-  transition: background var(--transition), color var(--transition), transform 0.15s;
-  margin-top: var(--sp-6);
-}
-.btn-secondary:hover {
-  background: var(--accent-light);
-  transform: translateY(-1px);
-}
-
-/* ─── Results section ────────────────────────────────────────────── */
-#results { margin-top: var(--sp-6); }
-
-.results-header {
-  text-align: center;
-  margin-bottom: var(--sp-8);
-}
-
-.results-title {
-  font-size: var(--fs-xl);
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: var(--sp-2);
-}
-
-.results-subtitle {
-  font-size: var(--fs-sm);
-  color: var(--text-muted);
-}
-
-/* All balanced message */
-.all-balanced {
-  text-align: center;
-  padding: var(--sp-8);
-  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
-  border-radius: var(--radius-lg);
-  animation: fadeSlideIn 0.6s ease;
-}
-[data-theme="dark"] .all-balanced {
-  background: linear-gradient(135deg, #064e3b, #065f46);
-}
-.all-balanced .balance-icon {
-  font-size: 3rem;
-  margin-bottom: var(--sp-4);
-  animation: bounce 2s ease infinite;
-}
-.all-balanced p {
-  font-size: var(--fs-lg);
-  font-weight: 600;
-  color: #065f46;
-}
-[data-theme="dark"] .all-balanced p { color: #a7f3d0; }
-
-/* ─── Chakra result card ─────────────────────────────────────────── */
-.chakra-result {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: var(--sp-6);
+  justify-content: space-between;
+  gap: var(--sp-3);
   margin-bottom: var(--sp-6);
-  box-shadow: var(--shadow-card);
-  border: 1px solid var(--border);
-  border-left-width: 5px;
-  animation: fadeSlideIn 0.5s ease both;
-  transition: box-shadow var(--transition);
+  min-height: 44px;
 }
-.chakra-result:hover { box-shadow: var(--shadow-hover); }
-
-/* Staggered entrance */
-.chakra-result:nth-child(1) { animation-delay: 0.05s; }
-.chakra-result:nth-child(2) { animation-delay: 0.15s; }
-.chakra-result:nth-child(3) { animation-delay: 0.25s; }
-.chakra-result:nth-child(4) { animation-delay: 0.35s; }
-.chakra-result:nth-child(5) { animation-delay: 0.45s; }
-.chakra-result:nth-child(6) { animation-delay: 0.55s; }
-.chakra-result:nth-child(7) { animation-delay: 0.65s; }
-
-.chakra-result-header {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-4);
-  margin-bottom: var(--sp-4);
-}
-
-.chakra-symbol-wrap {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.chakra-symbol-wrap .ring {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid;
-  opacity: 0.35;
-  animation: pulse-ring 2.5s ease-in-out infinite;
-}
-
-.chakra-symbol-wrap .ring2 {
-  inset: -10px;
-  border-width: 1.5px;
-  opacity: 0.18;
-  animation-delay: 0.5s;
-}
-
-.chakra-symbol-wrap svg {
-  animation: spin-slow 12s linear infinite;
-  width: 42px;
-  height: 42px;
-}
-
-.chakra-name {
-  flex: 1;
-}
-.chakra-name h3 {
-  font-size: var(--fs-lg);
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.2;
-  margin-bottom: var(--sp-1);
-}
-.chakra-name .chakra-location {
-  font-size: var(--fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.chakra-score-badge {
-  flex-shrink: 0;
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  padding: var(--sp-1) var(--sp-3);
-  border-radius: var(--radius-full);
-  border: 1.5px solid;
-}
-
-/* ─── Sections within result card ───────────────────────────────── */
-.result-section {
-  margin-top: var(--sp-4);
-}
-
-.result-section-title {
-  font-size: var(--fs-xs);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: var(--sp-2);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-}
-.result-section-title::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
-
-.chakra-description {
-  font-size: var(--fs-sm);
-  color: var(--text-secondary);
-  line-height: 1.7;
-}
-
-.chakra-signs,
-.chakra-tips {
-  padding-left: var(--sp-5);
-  margin: 0;
-}
-
-.chakra-signs li,
-.chakra-tips li {
-  font-size: var(--fs-sm);
-  color: var(--text-secondary);
-  margin-bottom: var(--sp-1);
-  line-height: 1.6;
-}
-
-.chakra-signs li::marker { color: var(--accent); }
-.chakra-tips li::marker  { content: "✦  "; font-size: 0.6em; color: var(--accent); }
-
-/* Score indicator bar */
-.score-bar-wrap {
-  margin-top: var(--sp-3);
+.brand {
   display: flex;
   align-items: center;
   gap: var(--sp-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
 }
-.score-bar-label {
-  font-size: var(--fs-xs);
-  color: var(--text-muted);
-  min-width: 85px;
+.brand svg { width: 30px; height: 30px; flex-shrink: 0; }
+.brand .brand-mark { animation: spin-slow 30s linear infinite; }
+
+.icon-btn {
+  -webkit-appearance: none; appearance: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  width: 44px; height: 44px;
+  display: inline-flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.2s var(--ease-out), background var(--transition), border-color var(--transition);
 }
-.score-bar-track {
+.icon-btn:hover { transform: translateY(-1px) scale(1.04); border-color: var(--border-strong); }
+.icon-btn:active { transform: scale(0.96); }
+.icon-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ─── Screens ────────────────────────────────────────────────────── */
+.screen { display: none; flex: 1; flex-direction: column; }
+.screen.active { display: flex; animation: screenIn 0.5s var(--ease-out) both; }
+@keyframes screenIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* Glass surface */
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+}
+
+/* ─── Intro screen ───────────────────────────────────────────────── */
+.intro {
   flex: 1;
-  height: 8px;
-  background: var(--progress-bg);
-  border-radius: var(--radius-full);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: var(--sp-5);
+  padding: var(--sp-6) 0;
 }
-.score-bar-fill {
-  height: 100%;
-  border-radius: var(--radius-full);
-  animation: growBar 1s ease both;
-  animation-delay: 0.3s;
-}
-.score-value {
+.intro-mandala { width: 150px; height: 150px; margin-bottom: var(--sp-2); }
+.intro-mandala .ring-a { animation: spin-slow 40s linear infinite; transform-origin: center; }
+.intro-mandala .ring-b { animation: spin-slow 28s linear infinite reverse; transform-origin: center; }
+.intro-mandala .petals { animation: breathe 6s ease-in-out infinite; transform-origin: center; }
+
+.eyebrow {
   font-size: var(--fs-xs);
   font-weight: 700;
-  color: var(--text-secondary);
-  min-width: 32px;
-  text-align: right;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
+.intro h1 {
+  font-family: var(--font-display);
+  font-size: var(--fs-4xl);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  background: linear-gradient(120deg, #7c3aed 0%, #ec4899 55%, #f59e0b 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-theme="dark"] .intro h1 {
+  background: linear-gradient(120deg, #c4b5fd 0%, #f472b6 55%, #fbbf24 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.intro .lede {
+  font-size: var(--fs-lg);
+  color: var(--text-secondary);
+  max-width: 44ch;
+  line-height: 1.65;
+}
+
+.chip-row { display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: center; }
+.chip {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  padding: var(--sp-2) var(--sp-4);
+}
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+/* Spectrum of the 7 centres shown on intro */
+.spectrum { display: flex; gap: 6px; justify-content: center; margin: var(--sp-1) 0; }
+.spectrum span {
+  width: 26px; height: 6px; border-radius: var(--radius-full);
+  opacity: 0.9;
+  animation: rise 1.4s var(--ease-out) both;
+}
+
+.btn {
+  -webkit-appearance: none; appearance: none;
+  font-family: var(--font-body);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-md);
+  transition: transform 0.18s var(--ease-out), box-shadow var(--transition), opacity var(--transition), background var(--transition), color var(--transition);
+}
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.btn-primary {
+  padding: var(--sp-4) var(--sp-10);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: #fff;
+  background: linear-gradient(120deg, #7c3aed, #a21caf);
+  box-shadow: 0 14px 34px -12px rgba(124,58,237,0.7);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 20px 42px -12px rgba(124,58,237,0.8); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  padding: var(--sp-3) var(--sp-6);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { transform: translateY(-1px); border-color: var(--border-strong); }
+.btn-ghost:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.fineprint {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  max-width: 40ch;
+  margin-top: var(--sp-2);
+  line-height: 1.6;
+}
+.resume-note {
+  font-size: var(--fs-sm);
+  color: var(--text-secondary);
+}
+.resume-note button {
+  background: none; border: none; padding: 0; cursor: pointer;
+  color: var(--accent); font: inherit; font-weight: 700; text-decoration: underline;
+}
+
+/* ─── Quiz screen ────────────────────────────────────────────────── */
+.quiz-head { margin-bottom: var(--sp-6); }
+.quiz-meta {
+  display: flex; align-items: baseline; justify-content: space-between;
+  font-size: var(--fs-xs);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: var(--sp-3);
+}
+.quiz-meta .count { font-weight: 700; }
+
+/* Chakra progress rail: 7 segments */
+.rail { display: flex; gap: 5px; }
+.rail .seg {
+  flex: 1; height: 6px; border-radius: var(--radius-full);
+  background: var(--track);
+  overflow: hidden; position: relative;
+}
+.rail .seg i {
+  position: absolute; inset: 0; width: 0%;
+  border-radius: var(--radius-full);
+  transition: width 0.45s var(--ease-out);
+}
+
+.qcard { padding: clamp(var(--sp-6), 5vw, var(--sp-10)); }
+
+.chakra-tag {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-xs); font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  padding: var(--sp-1) var(--sp-3);
+  border-radius: var(--radius-full);
+  margin-bottom: var(--sp-5);
+  transition: color var(--transition), background var(--transition);
+}
+.chakra-tag .glyph { width: 16px; height: 16px; }
+
+.question-text {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 4.5vw, var(--fs-2xl));
+  font-weight: 600;
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: var(--sp-6);
+  min-height: 2.4em;
+}
+
+.options { display: flex; flex-direction: column; gap: var(--sp-3); }
+.option {
+  -webkit-appearance: none; appearance: none;
+  display: flex; align-items: center; gap: var(--sp-4);
+  width: 100%; text-align: left;
+  padding: var(--sp-4) var(--sp-4);
+  font-family: var(--font-body); font-size: var(--fs-md);
+  color: var(--text-primary);
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: transform 0.14s var(--ease-out), border-color var(--transition), background var(--transition), box-shadow var(--transition);
+}
+.option:hover { transform: translateX(4px); border-color: var(--border-strong); }
+.option:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.option .key {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  font-size: var(--fs-sm); font-weight: 700;
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+.option .label { flex: 1; line-height: 1.4; }
+.option[aria-checked="true"] {
+  background: var(--chakra-soft, var(--accent-soft));
+  border-color: var(--chakra, var(--accent));
+  box-shadow: 0 0 0 3px var(--chakra-soft, var(--accent-soft));
+}
+.option[aria-checked="true"] .key {
+  background: var(--chakra, var(--accent));
+  border-color: var(--chakra, var(--accent));
+  color: #fff;
+}
+
+.quiz-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--sp-3);
+  margin-top: var(--sp-8);
+}
+.hint {
+  font-size: var(--fs-xs); color: var(--text-muted);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.hint kbd {
+  font-family: var(--font-body); font-size: 0.68rem;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: 5px; padding: 1px 6px; color: var(--text-secondary);
+}
+
+/* ─── Results screen ─────────────────────────────────────────────── */
+.results-hero { text-align: center; margin-bottom: var(--sp-8); }
+.results-hero .eyebrow { margin-bottom: var(--sp-2); }
+.results-hero h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-3xl); font-weight: 600; line-height: 1.1;
+  letter-spacing: -0.01em; color: var(--text-primary);
+  margin-bottom: var(--sp-2);
+}
+.results-hero p { color: var(--text-secondary); font-size: var(--fs-md); }
+
+/* Overview: the full 7-centre column */
+.overview { padding: var(--sp-6); margin-bottom: var(--sp-8); }
+.overview h3 {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: var(--sp-5);
+}
+.ov-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--sp-3) var(--sp-4);
+  padding: var(--sp-3) 0;
+}
+.ov-row + .ov-row { border-top: 1px solid var(--border); }
+.ov-orb {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 4px var(--chakra-soft);
+}
+.ov-orb svg { width: 22px; height: 22px; }
+.ov-info { min-width: 0; }
+.ov-name { font-weight: 700; font-size: var(--fs-sm); color: var(--text-primary); line-height: 1.2; }
+.ov-sanskrit { font-size: var(--fs-xs); color: var(--text-muted); }
+.ov-meter { grid-column: 1 / -1; height: 8px; border-radius: var(--radius-full); background: var(--track); overflow: hidden; }
+.ov-meter i { display: block; height: 100%; border-radius: var(--radius-full); width: 0; transition: width 0.9s var(--ease-out); }
+.ov-status {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.04em;
+  text-transform: uppercase; white-space: nowrap;
+  padding: var(--sp-1) var(--sp-3); border-radius: var(--radius-full);
+}
+.ov-status.attention { color: var(--chakra); background: var(--chakra-soft); }
+.ov-status.balanced { color: var(--text-muted); background: var(--surface-2); }
+
+.section-lead {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin: var(--sp-8) 0 var(--sp-4);
+  display: flex; align-items: center; gap: var(--sp-3);
+}
+.section-lead::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+/* Detailed chakra card */
+.chakra-result {
+  padding: var(--sp-6);
+  margin-bottom: var(--sp-5);
+  position: relative; overflow: hidden;
+  animation: rise 0.6s var(--ease-out) both;
+}
+.chakra-result::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+  background: var(--chakra);
+}
+.cr-head { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-5); }
+.cr-orb {
+  flex-shrink: 0; width: 60px; height: 60px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; background: var(--chakra-soft);
+}
+.cr-orb .ring {
+  position: absolute; inset: -5px; border-radius: 50%;
+  border: 2px solid var(--chakra); opacity: 0.35;
+  animation: pulse-ring 2.8s ease-in-out infinite;
+}
+.cr-orb .ring.r2 { inset: -11px; border-width: 1.5px; opacity: 0.16; animation-delay: 0.6s; }
+.cr-orb svg { width: 40px; height: 40px; animation: spin-slow 16s linear infinite; }
+.cr-title { flex: 1; min-width: 0; }
+.cr-title h3 { font-family: var(--font-display); font-size: var(--fs-xl); font-weight: 600; color: var(--text-primary); line-height: 1.15; }
+.cr-loc { font-size: var(--fs-xs); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); margin-top: 2px; }
+.cr-badge {
+  flex-shrink: 0; align-self: flex-start;
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.04em;
+  padding: var(--sp-1) var(--sp-3); border-radius: var(--radius-full);
+  color: var(--chakra); background: var(--chakra-soft); border: 1px solid var(--chakra);
+}
+
+.cr-score { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-5); }
+.cr-score .lbl { font-size: var(--fs-xs); color: var(--text-muted); white-space: nowrap; }
+.cr-score .track { flex: 1; height: 8px; background: var(--track); border-radius: var(--radius-full); overflow: hidden; }
+.cr-score .fill { height: 100%; border-radius: var(--radius-full); background: var(--chakra); width: 0; animation: growBar 1s var(--ease-out) both; animation-delay: 0.35s; }
+.cr-score .val { font-size: var(--fs-xs); font-weight: 700; color: var(--text-secondary); white-space: nowrap; }
+
+.cr-section { margin-top: var(--sp-5); }
+.cr-section h4 {
+  font-size: var(--fs-xs); font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: var(--sp-3);
+  display: flex; align-items: center; gap: var(--sp-2);
+}
+.cr-section h4::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+.cr-desc { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.cr-list { list-style: none; display: flex; flex-direction: column; gap: var(--sp-2); }
+.cr-list li { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.55; display: flex; gap: var(--sp-3); }
+.cr-list li::before { content: ""; flex-shrink: 0; margin-top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--chakra); }
+.cr-list.tips li::before { border-radius: 1px; transform: rotate(45deg); }
+
+/* All-balanced */
+.all-balanced {
+  text-align: center; padding: var(--sp-12) var(--sp-6);
+  animation: rise 0.6s var(--ease-out) both;
+}
+.all-balanced .icon { font-size: 3.5rem; margin-bottom: var(--sp-4); display: inline-block; animation: breathe 3s ease-in-out infinite; }
+.all-balanced h3 { font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: 600; color: var(--text-primary); margin-bottom: var(--sp-3); }
+.all-balanced p { color: var(--text-secondary); max-width: 40ch; margin: 0 auto; }
+
+.results-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); justify-content: center; margin-top: var(--sp-8); }
+
+.footer-note { text-align: center; font-size: var(--fs-xs); color: var(--text-muted); margin-top: var(--sp-8); line-height: 1.6; }
 
 /* ─── Animations ─────────────────────────────────────────────────── */
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@keyframes pulse-ring {
-  0%, 100% { transform: scale(1); opacity: 0.35; }
-  50%       { transform: scale(1.12); opacity: 0.15; }
-}
-@keyframes fadeSlideIn {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-8px); }
-}
-@keyframes growBar {
-  from { width: 0; }
-}
+@keyframes spin-slow { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+@keyframes pulse-ring { 0%,100% { transform: scale(1); opacity: 0.35; } 50% { transform: scale(1.15); opacity: 0.12; } }
+@keyframes rise { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+@keyframes growBar { from { width: 0 !important; } }
+@keyframes breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
 
-/* ─── Mobile Responsive ──────────────────────────────────────────── */
+/* ─── Responsive ─────────────────────────────────────────────────── */
 @media (max-width: 480px) {
-  body { padding-top: var(--sp-4); }
+  .page { padding-left: calc(env(safe-area-inset-left,0px) + var(--sp-4)); padding-right: calc(env(safe-area-inset-right,0px) + var(--sp-4)); }
+  .qcard { padding: var(--sp-5); }
+  .intro-mandala { width: 120px; height: 120px; }
+  .cr-orb { width: 50px; height: 50px; } .cr-orb svg { width: 32px; height: 32px; }
+  .btn-primary { width: 100%; }
+  .quiz-nav { flex-wrap: wrap; }
+  .hint { order: 3; width: 100%; justify-content: center; }
+}
 
-  .card { padding: var(--sp-5); }
-
-  .site-title { font-size: var(--fs-xl); }
-
-  .chakra-result { padding: var(--sp-4); }
-
-  .chakra-symbol-wrap { width: 50px; height: 50px; }
-  .chakra-symbol-wrap svg { width: 34px; height: 34px; }
-
-  .chakra-name h3 { font-size: var(--fs-md); }
-
-  select { font-size: var(--fs-sm); padding: var(--sp-2) var(--sp-8) var(--sp-2) var(--sp-3); }
-
-  .btn-primary { font-size: var(--fs-md); padding: var(--sp-3) var(--sp-4); }
-
-  .score-bar-label { min-width: 65px; font-size: 0.65rem; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg-page:    #0f0d1a;
-    --bg-card:    #1c1830;
-    --bg-card-2:  #251f3e;
-    --bg-input:   #2a2348;
-    --border:     #3a3060;
-    --text-primary:   #f0edf8;
-    --text-secondary: #c4b5fd;
-    --text-muted:     #8b7db8;
+    --bg-base:    #0b0916;
+    --bg-glow-1:  rgba(124,58,237,0.34);
+    --bg-glow-2:  rgba(236,72,153,0.20);
+    --bg-glow-3:  rgba(37,99,235,0.24);
+    --surface:    rgba(28,23,48,0.66);
+    --surface-2:  rgba(38,31,64,0.55);
+    --surface-solid: #17132a;
+    --border:     rgba(167,139,250,0.18);
+    --border-strong: rgba(167,139,250,0.38);
+    --text-primary:   #f2eefb;
+    --text-secondary: #cbbdf3;
+    --text-muted:     #928bb8;
     --accent:     #a78bfa;
-    --accent-hover:#c4b5fd;
-    --accent-light:#2e2060;
-    --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
-    --shadow-hover: 0 8px 32px rgba(167,139,250,0.25);
-    --progress-bg: #2a2348;
-    --toggle-bg:  #2a2348;
+    --accent-soft: rgba(167,139,250,0.16);
+    --shadow-card: 0 24px 60px -24px rgba(0,0,0,0.75);
+    --shadow-soft: 0 12px 34px -18px rgba(0,0,0,0.6);
+    --track:      rgba(167,139,250,0.16);
+    --scrim:      rgba(11,9,22,0.6);
   }
 }
 </style>
 </head>
 <body>
-<div class="page-wrapper">
+<div class="aurora" aria-hidden="true"></div>
 
-  <!-- ── Header ──────────────────────────────────────────── -->
-  <header class="site-header">
-    <div class="header-content">
-      <!-- Decorative mandala SVG -->
-      <svg class="header-mandala" width="64" height="64" viewBox="0 0 100 100" aria-hidden="true">
-        <circle cx="50" cy="50" r="46" fill="none" stroke="url(#mg1)" stroke-width="2.5" stroke-dasharray="8 4"/>
-        <circle cx="50" cy="50" r="34" fill="none" stroke="url(#mg1)" stroke-width="1.5" stroke-dasharray="6 6"/>
-        <circle cx="50" cy="50" r="18" fill="url(#mg1)" opacity="0.25"/>
-        <polygon points="50,20 57,40 78,40 62,53 68,74 50,62 32,74 38,53 22,40 43,40" fill="url(#mg1)" opacity="0.6"/>
-        <defs>
-          <linearGradient id="mg1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#7c3aed"/>
-            <stop offset="100%" stop-color="#ec4899"/>
-          </linearGradient>
-        </defs>
+<div class="page">
+
+  <!-- ── Top bar ─────────────────────────────────────────── -->
+  <div class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46" fill="none" stroke="url(#bg1)" stroke-width="2" stroke-dasharray="6 5"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="url(#bg1)" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <circle cx="50" cy="50" r="12" fill="url(#bg1)" opacity="0.85"/>
+        <defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#f472b6"/>
+        </linearGradient></defs>
       </svg>
-      <h1 class="site-title">Chakra Balance Advisor</h1>
-      <p class="site-subtitle">37 questions · 7 energy centres</p>
+      <span>Chakra&nbsp;Balance</span>
     </div>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">🌙</button>
-  </header>
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+  </div>
 
-  <!-- ── Quiz Card ────────────────────────────────────────── -->
-  <div class="card">
-    <!-- Progress -->
-    <div class="progress-wrap" aria-label="Quiz progress">
-      <div class="progress-label">
-        <span>Progress</span>
-        <span id="progressText">0 / 37 answered</span>
+  <!-- ══ INTRO ═══════════════════════════════════════════════ -->
+  <section class="screen active" id="screen-intro" aria-labelledby="introTitle">
+    <div class="intro">
+      <svg class="intro-mandala" viewBox="0 0 120 120" aria-hidden="true">
+        <g class="ring-a">
+          <circle cx="60" cy="60" r="54" fill="none" stroke="url(#mg)" stroke-width="1.5" stroke-dasharray="3 6"/>
+        </g>
+        <g class="ring-b">
+          <circle cx="60" cy="60" r="42" fill="none" stroke="url(#mg)" stroke-width="1.5" stroke-dasharray="2 7"/>
+        </g>
+        <g class="petals" fill="url(#mg)">
+          <circle cx="60" cy="60" r="20" opacity="0.18"/>
+          <polygon points="60,26 68,50 92,50 73,64 80,88 60,73 40,88 47,64 28,50 52,50" opacity="0.65"/>
+          <circle cx="60" cy="60" r="8" opacity="0.9"/>
+        </g>
+        <defs><linearGradient id="mg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#7c3aed"/><stop offset="0.5" stop-color="#ec4899"/><stop offset="1" stop-color="#f59e0b"/>
+        </linearGradient></defs>
+      </svg>
+
+      <span class="eyebrow">Energy Assessment</span>
+      <h1 id="introTitle">Find your<br>balance within</h1>
+      <p class="lede">A gentle 37-question journey through your seven energy centres — revealing which chakras may need attention, and how to bring them home.</p>
+
+      <div class="spectrum" aria-hidden="true" id="introSpectrum"></div>
+
+      <div class="chip-row">
+        <span class="chip"><span class="dot" style="background:#a78bfa"></span>37 questions</span>
+        <span class="chip"><span class="dot" style="background:#f472b6"></span>~5 minutes</span>
+        <span class="chip"><span class="dot" style="background:#fbbf24"></span>7 chakras</span>
       </div>
-      <div class="progress-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="37" aria-valuenow="0">
-        <div class="progress-bar-fill" id="progressFill"></div>
+
+      <button class="btn btn-primary" id="beginBtn">Begin the assessment</button>
+      <p class="resume-note" id="resumeNote" hidden>You have a session in progress. <button id="resumeBtn" type="button">Continue where you left off →</button></p>
+
+      <p class="fineprint">This is a reflective wellness tool for self-awareness, not medical, psychological, or spiritual advice. Your answers stay on your device.</p>
+    </div>
+  </section>
+
+  <!-- ══ QUIZ ════════════════════════════════════════════════ -->
+  <section class="screen" id="screen-quiz" aria-labelledby="questionText">
+    <div class="quiz-head">
+      <div class="quiz-meta">
+        <span class="count"><span id="qNow">1</span> <span style="opacity:.5">/ 37</span></span>
+        <span id="qAnswered">0 answered</span>
       </div>
+      <div class="rail" id="rail" aria-hidden="true"></div>
     </div>
 
-    <div id="questionnaire">
+    <div class="glass qcard">
+      <span class="chakra-tag" id="chakraTag"></span>
+      <p class="question-text" id="questionText"></p>
+      <div class="options" id="options" role="radiogroup" aria-labelledby="questionText"></div>
+    </div>
 
-      <!-- Q1-Q7: one per chakra (5-question blocks, except Heart=6, Crown=5) -->
-      <!-- Root (Q1-5) -->
-      <div class="question">
-        <label for="q1"><span class="question-number">1</span>How grounded and secure do you feel in your daily life?</label>
-        <div class="select-wrap">
-          <select id="q1" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very insecure and ungrounded</option>
-            <option value="2">Somewhat insecure</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly grounded</option>
-            <option value="5">Very grounded and secure</option>
-          </select>
-        </div>
-      </div>
+    <div class="quiz-nav">
+      <button class="btn btn-ghost" id="prevBtn">← Back</button>
+      <span class="hint"><kbd>1</kbd>–<kbd>5</kbd> to choose · <kbd>←</kbd> <kbd>→</kbd> to move</span>
+      <button class="btn btn-ghost" id="nextBtn" disabled>Next →</button>
+    </div>
+  </section>
 
-      <div class="question">
-        <label for="q2"><span class="question-number">2</span>How satisfied are you with your emotional well-being and relationships?</label>
-        <div class="select-wrap">
-          <select id="q2" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very unsatisfied</option>
-            <option value="2">Somewhat unsatisfied</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly satisfied</option>
-            <option value="5">Very satisfied</option>
-          </select>
-        </div>
-      </div>
+  <!-- ══ RESULTS ═════════════════════════════════════════════ -->
+  <section class="screen" id="screen-results" aria-labelledby="resultsTitle">
+    <div id="results"></div>
+  </section>
 
-      <div class="question">
-        <label for="q3"><span class="question-number">3</span>How confident do you feel in your personal power and self-esteem?</label>
-        <div class="select-wrap">
-          <select id="q3" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very unconfident</option>
-            <option value="2">Somewhat unconfident</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly confident</option>
-            <option value="5">Very confident</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q4"><span class="question-number">4</span>How open is your heart to giving and receiving love?</label>
-        <div class="select-wrap">
-          <select id="q4" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very closed</option>
-            <option value="2">Somewhat closed</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly open</option>
-            <option value="5">Very open</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q5"><span class="question-number">5</span>How effectively do you communicate your thoughts and feelings?</label>
-        <div class="select-wrap">
-          <select id="q5" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very ineffectively</option>
-            <option value="2">Somewhat ineffectively</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly effectively</option>
-            <option value="5">Very effectively</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q6"><span class="question-number">6</span>How clear is your intuition and ability to see the bigger picture?</label>
-        <div class="select-wrap">
-          <select id="q6" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very unclear</option>
-            <option value="2">Somewhat unclear</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly clear</option>
-            <option value="5">Very clear</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q7"><span class="question-number">7</span>How connected do you feel to your spiritual self and the universe?</label>
-        <div class="select-wrap">
-          <select id="q7" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very disconnected</option>
-            <option value="2">Somewhat disconnected</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly connected</option>
-            <option value="5">Very connected</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q8"><span class="question-number">8</span>How often do you feel anxious or fearful in your daily life?</label>
-        <div class="select-wrap">
-          <select id="q8" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very often</option>
-            <option value="2">Often</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Rarely</option>
-            <option value="5">Almost never</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q9"><span class="question-number">9</span>How comfortable are you with change and new experiences?</label>
-        <div class="select-wrap">
-          <select id="q9" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very uncomfortable</option>
-            <option value="2">Somewhat uncomfortable</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly comfortable</option>
-            <option value="5">Very comfortable</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q10"><span class="question-number">10</span>How often do you practice self-care or self-love?</label>
-        <div class="select-wrap">
-          <select id="q10" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q11"><span class="question-number">11</span>How trusting are you of the universe to provide for you?</label>
-        <div class="select-wrap">
-          <select id="q11" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Not at all trusting</option>
-            <option value="2">Somewhat trusting</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly trusting</option>
-            <option value="5">Very trusting</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q12"><span class="question-number">12</span>How often do you engage in meditation or mindfulness practices?</label>
-        <div class="select-wrap">
-          <select id="q12" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q13"><span class="question-number">13</span>How do you feel about your ability to manifest your desires?</label>
-        <div class="select-wrap">
-          <select id="q13" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very ineffective</option>
-            <option value="2">Somewhat ineffective</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly effective</option>
-            <option value="5">Very effective</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q14"><span class="question-number">14</span>How often do you feel gratitude in your life?</label>
-        <div class="select-wrap">
-          <select id="q14" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q15"><span class="question-number">15</span>How at ease do you feel in social situations?</label>
-        <div class="select-wrap">
-          <select id="q15" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very uneasy</option>
-            <option value="2">Somewhat uneasy</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly at ease</option>
-            <option value="5">Very at ease</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q16"><span class="question-number">16</span>How often do you take time to reflect on your thoughts and feelings?</label>
-        <div class="select-wrap">
-          <select id="q16" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q17"><span class="question-number">17</span>How much do you value your individuality and self-expression?</label>
-        <div class="select-wrap">
-          <select id="q17" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Not at all</option>
-            <option value="2">Somewhat</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly</option>
-            <option value="5">Very much</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q18"><span class="question-number">18</span>How often do you seek new knowledge or experiences?</label>
-        <div class="select-wrap">
-          <select id="q18" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q19"><span class="question-number">19</span>How often do you feel a sense of belonging in your community?</label>
-        <div class="select-wrap">
-          <select id="q19" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q20"><span class="question-number">20</span>How connected do you feel to your body?</label>
-        <div class="select-wrap">
-          <select id="q20" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very disconnected</option>
-            <option value="2">Somewhat disconnected</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly connected</option>
-            <option value="5">Very connected</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q21"><span class="question-number">21</span>How often do you feel a sense of compassion for others?</label>
-        <div class="select-wrap">
-          <select id="q21" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q22"><span class="question-number">22</span>How often do you feel inspired or motivated?</label>
-        <div class="select-wrap">
-          <select id="q22" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q23"><span class="question-number">23</span>How comfortable are you expressing your emotions?</label>
-        <div class="select-wrap">
-          <select id="q23" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very uncomfortable</option>
-            <option value="2">Somewhat uncomfortable</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly comfortable</option>
-            <option value="5">Very comfortable</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q24"><span class="question-number">24</span>How often do you experience joy in your daily life?</label>
-        <div class="select-wrap">
-          <select id="q24" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q25"><span class="question-number">25</span>How often do you feel a sense of purpose in your life?</label>
-        <div class="select-wrap">
-          <select id="q25" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q26"><span class="question-number">26</span>How often do you feel connected to nature?</label>
-        <div class="select-wrap">
-          <select id="q26" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q27"><span class="question-number">27</span>How often do you feel a sense of unity with the world around you?</label>
-        <div class="select-wrap">
-          <select id="q27" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q28"><span class="question-number">28</span>How often do you feel overwhelmed by your responsibilities?</label>
-        <div class="select-wrap">
-          <select id="q28" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very often</option>
-            <option value="2">Often</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Rarely</option>
-            <option value="5">Almost never</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q29"><span class="question-number">29</span>How satisfied are you with your ability to set and maintain boundaries?</label>
-        <div class="select-wrap">
-          <select id="q29" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very unsatisfied</option>
-            <option value="2">Somewhat unsatisfied</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly satisfied</option>
-            <option value="5">Very satisfied</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q30"><span class="question-number">30</span>How often do you engage in activities that bring you joy?</label>
-        <div class="select-wrap">
-          <select id="q30" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q31"><span class="question-number">31</span>How comfortable are you with silence and solitude?</label>
-        <div class="select-wrap">
-          <select id="q31" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very uncomfortable</option>
-            <option value="2">Somewhat uncomfortable</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly comfortable</option>
-            <option value="5">Very comfortable</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q32"><span class="question-number">32</span>How often do you feel a sense of awe or wonder about the world?</label>
-        <div class="select-wrap">
-          <select id="q32" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q33"><span class="question-number">33</span>How satisfied are you with your ability to make decisions?</label>
-        <div class="select-wrap">
-          <select id="q33" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very unsatisfied</option>
-            <option value="2">Somewhat unsatisfied</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly satisfied</option>
-            <option value="5">Very satisfied</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q34"><span class="question-number">34</span>How often do you feel a sense of inner peace?</label>
-        <div class="select-wrap">
-          <select id="q34" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q35"><span class="question-number">35</span>How comfortable are you with uncertainty and change?</label>
-        <div class="select-wrap">
-          <select id="q35" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very uncomfortable</option>
-            <option value="2">Somewhat uncomfortable</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly comfortable</option>
-            <option value="5">Very comfortable</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q36"><span class="question-number">36</span>How often do you feel connected to your life's purpose?</label>
-        <div class="select-wrap">
-          <select id="q36" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Almost never</option>
-            <option value="2">Rarely</option>
-            <option value="3">Sometimes</option>
-            <option value="4">Often</option>
-            <option value="5">Very often</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="question">
-        <label for="q37"><span class="question-number">37</span>How satisfied are you with your ability to listen to and trust your intuition?</label>
-        <div class="select-wrap">
-          <select id="q37" onchange="onAnswer(this)">
-            <option value="">Select an answer</option>
-            <option value="1">Very unsatisfied</option>
-            <option value="2">Somewhat unsatisfied</option>
-            <option value="3">Neutral</option>
-            <option value="4">Fairly satisfied</option>
-            <option value="5">Very satisfied</option>
-          </select>
-        </div>
-      </div>
-
-      <button class="btn-primary" onclick="analyzeChakras()">✦ Analyze My Chakras</button>
-    </div><!-- /#questionnaire -->
-  </div><!-- /.card -->
-
-  <!-- ── Results ───────────────────────────────────────────── -->
-  <div id="results"></div>
-
-</div><!-- /.page-wrapper -->
+</div>
 
 <script>
-/* ── Chakra data ─────────────────────────────────────────────────── */
-const chakras = [
+/* ═══ Chakra data ═════════════════════════════════════════════════ */
+const CHAKRAS = [
   {
-    name: "Root Chakra",
-    sanskrit: "Muladhara",
-    color: "#e53e3e",
-    colorLight: "rgba(229,62,62,0.15)",
-    location: "Base of spine · Earth element",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#e53e3e"/>
-      <polygon points="50,18 82,74 18,74" fill="none" stroke="#fff" stroke-width="4"/>
-      <circle cx="50" cy="54" r="8" fill="#fff" opacity="0.7"/>
-    </svg>`,
+    name: "Root Chakra", sanskrit: "Muladhara", color: "#ef4444",
+    location: "Base of spine · Earth", element: "Earth",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><polygon points="50,20 80,72 20,72" fill="none" stroke="#fff" stroke-width="4"/><circle cx="50" cy="55" r="7" fill="#fff" opacity="0.8"/></svg>`,
     description: "The Root Chakra forms the energetic foundation of your entire system. It governs your sense of safety, physical security, survival instincts, and your connection to the earth and body. When balanced, you feel stable, grounded, and at home in the world.",
     imbalanceSigns: [
       "Persistent anxiety, fear, or feelings of insecurity",
@@ -1203,17 +669,9 @@ const chakras = [
     ]
   },
   {
-    name: "Sacral Chakra",
-    sanskrit: "Svadhisthana",
-    color: "#dd6b20",
-    colorLight: "rgba(221,107,32,0.15)",
-    location: "Lower abdomen · Water element",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#dd6b20"/>
-      <circle cx="50" cy="50" r="24" fill="none" stroke="#fff" stroke-width="4"/>
-      <circle cx="50" cy="50" r="10" fill="#fff" opacity="0.7"/>
-      <circle cx="50" cy="26" r="5" fill="#fff" opacity="0.5"/>
-    </svg>`,
+    name: "Sacral Chakra", sanskrit: "Svadhisthana", color: "#f97316",
+    location: "Lower abdomen · Water", element: "Water",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><circle cx="50" cy="50" r="24" fill="none" stroke="#fff" stroke-width="4"/><circle cx="50" cy="50" r="9" fill="#fff" opacity="0.8"/><circle cx="50" cy="24" r="5" fill="#fff" opacity="0.55"/></svg>`,
     description: "The Sacral Chakra is the seat of creativity, pleasure, passion, and emotional fluidity. It governs how you experience and express emotions, your relationship with sensuality, and your capacity for joy and creative flow.",
     imbalanceSigns: [
       "Creative blocks or feeling uninspired",
@@ -1231,15 +689,9 @@ const chakras = [
     ]
   },
   {
-    name: "Solar Plexus Chakra",
-    sanskrit: "Manipura",
-    color: "#b7791f",
-    colorLight: "rgba(183,121,31,0.15)",
-    location: "Upper abdomen · Fire element",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#d69e2e"/>
-      <polygon points="50,20 61,42 86,42 67,57 74,80 50,66 26,80 33,57 14,42 39,42" fill="#fff" opacity="0.75"/>
-    </svg>`,
+    name: "Solar Plexus Chakra", sanskrit: "Manipura", color: "#eab308",
+    location: "Upper abdomen · Fire", element: "Fire",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><polygon points="50,22 61,44 85,44 66,58 73,81 50,67 27,81 34,58 15,44 39,44" fill="#fff" opacity="0.82"/></svg>`,
     description: "The Solar Plexus Chakra is the powerhouse of the self — your centre of personal power, confidence, will, and self-discipline. It governs your ability to take action, make decisions, and show up authentically in the world.",
     imbalanceSigns: [
       "Low self-esteem or persistent self-doubt",
@@ -1257,15 +709,9 @@ const chakras = [
     ]
   },
   {
-    name: "Heart Chakra",
-    sanskrit: "Anahata",
-    color: "#276749",
-    colorLight: "rgba(39,103,73,0.15)",
-    location: "Centre of chest · Air element",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#38a169"/>
-      <path d="M50 75 C30 58 12 48 12 34 C12 22 22 14 32 14 C38 14 44 18 50 26 C56 18 62 14 68 14 C78 14 88 22 88 34 C88 48 70 58 50 75Z" fill="#fff" opacity="0.8"/>
-    </svg>`,
+    name: "Heart Chakra", sanskrit: "Anahata", color: "#22c55e",
+    location: "Centre of chest · Air", element: "Air",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><path d="M50 76 C30 59 12 49 12 35 C12 23 22 15 32 15 C38 15 44 19 50 27 C56 19 62 15 68 15 C78 15 88 23 88 35 C88 49 70 59 50 76Z" fill="#fff" opacity="0.85"/></svg>`,
     description: "The Heart Chakra bridges the physical and spiritual realms, governing love, compassion, empathy, forgiveness, and inner peace. A balanced heart chakra allows you to give and receive love freely, feel connected to others, and experience a deep sense of wholeness.",
     imbalanceSigns: [
       "Difficulty trusting others or allowing vulnerability",
@@ -1283,17 +729,9 @@ const chakras = [
     ]
   },
   {
-    name: "Throat Chakra",
-    sanskrit: "Vishuddha",
-    color: "#2b6cb0",
-    colorLight: "rgba(43,108,176,0.15)",
-    location: "Throat · Ether/Space element",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#3182ce"/>
-      <circle cx="50" cy="50" r="26" fill="#fff" opacity="0.3"/>
-      <circle cx="50" cy="50" r="16" fill="#fff" opacity="0.75"/>
-      <circle cx="50" cy="50" r="6"  fill="#3182ce"/>
-    </svg>`,
+    name: "Throat Chakra", sanskrit: "Vishuddha", color: "#3b82f6",
+    location: "Throat · Ether", element: "Ether",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><circle cx="50" cy="50" r="27" fill="#fff" opacity="0.3"/><circle cx="50" cy="50" r="16" fill="#fff" opacity="0.8"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>`,
     description: "The Throat Chakra governs authentic self-expression, communication, listening, and speaking one's truth. When balanced, you express yourself clearly and honestly, listen actively, and feel heard and understood by others.",
     imbalanceSigns: [
       "Difficulty speaking up or saying what you mean",
@@ -1311,17 +749,9 @@ const chakras = [
     ]
   },
   {
-    name: "Third Eye Chakra",
-    sanskrit: "Ajna",
-    color: "#553c9a",
-    colorLight: "rgba(85,60,154,0.15)",
-    location: "Forehead (between eyebrows) · Light element",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#6b46c1"/>
-      <ellipse cx="50" cy="50" rx="30" ry="18" fill="#fff" opacity="0.3"/>
-      <circle cx="50" cy="50" r="14" fill="#fff" opacity="0.8"/>
-      <circle cx="50" cy="50" r="6"  fill="#6b46c1"/>
-    </svg>`,
+    name: "Third Eye Chakra", sanskrit: "Ajna", color: "#6366f1",
+    location: "Between the brows · Light", element: "Light",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><ellipse cx="50" cy="50" rx="31" ry="18" fill="#fff" opacity="0.32"/><circle cx="50" cy="50" r="13" fill="#fff" opacity="0.85"/><circle cx="50" cy="50" r="6" fill="currentColor"/></svg>`,
     description: "The Third Eye Chakra is the seat of intuition, inner wisdom, perception, and imagination. It allows you to see beyond surface appearances, access higher insight, and trust your inner knowing. A balanced third eye connects rational thought with intuitive understanding.",
     imbalanceSigns: [
       "Feeling mentally foggy or unable to think clearly",
@@ -1339,21 +769,9 @@ const chakras = [
     ]
   },
   {
-    name: "Crown Chakra",
-    sanskrit: "Sahasrara",
-    color: "#702459",
-    colorLight: "rgba(112,36,89,0.15)",
-    location: "Top of head · Thought/Consciousness",
-    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="50" r="44" fill="#9f7aea"/>
-      <circle cx="50" cy="50" r="30" fill="#fff" opacity="0.25"/>
-      <circle cx="50" cy="50" r="18" fill="#fff" opacity="0.6"/>
-      <circle cx="50" cy="50" r="6"  fill="#9f7aea"/>
-      <line x1="50" y1="6"  x2="50" y2="20" stroke="#fff" stroke-width="3" opacity="0.6"/>
-      <line x1="50" y1="80" x2="50" y2="94" stroke="#fff" stroke-width="3" opacity="0.6"/>
-      <line x1="6"  y1="50" x2="20" y2="50" stroke="#fff" stroke-width="3" opacity="0.6"/>
-      <line x1="80" y1="50" x2="94" y2="50" stroke="#fff" stroke-width="3" opacity="0.6"/>
-    </svg>`,
+    name: "Crown Chakra", sanskrit: "Sahasrara", color: "#a855f7",
+    location: "Top of head · Consciousness", element: "Thought",
+    symbol: `<svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="currentColor"/><circle cx="50" cy="50" r="30" fill="#fff" opacity="0.25"/><circle cx="50" cy="50" r="17" fill="#fff" opacity="0.7"/><circle cx="50" cy="50" r="6" fill="currentColor"/><line x1="50" y1="6" x2="50" y2="20" stroke="#fff" stroke-width="3" opacity="0.7"/><line x1="50" y1="80" x2="50" y2="94" stroke="#fff" stroke-width="3" opacity="0.7"/><line x1="6" y1="50" x2="20" y2="50" stroke="#fff" stroke-width="3" opacity="0.7"/><line x1="80" y1="50" x2="94" y2="50" stroke="#fff" stroke-width="3" opacity="0.7"/></svg>`,
     description: "The Crown Chakra is the gateway to higher consciousness, divine connection, and spiritual awareness. It transcends individual identity and connects you to the greater whole — to universal wisdom, pure awareness, and a sense of oneness with all existence.",
     imbalanceSigns: [
       "Feeling spiritually disconnected or existentially lost",
@@ -1372,183 +790,365 @@ const chakras = [
   }
 ];
 
-/* ── Scoring slices (same as original) ────────────────────────────── */
-const CHAKRA_QUESTION_SLICES = [
-  [0, 5],   // Root         → Q1–5
-  [5, 10],  // Sacral       → Q6–10
-  [10, 15], // Solar Plexus → Q11–15
-  [15, 21], // Heart        → Q16–21
-  [21, 26], // Throat       → Q22–26
-  [26, 32], // Third Eye    → Q27–32
-  [32, 37]  // Crown        → Q33–37
+/* Scoring slices — unchanged from the original logic */
+const SLICES = [ [0,5], [5,10], [10,15], [15,21], [21,26], [26,32], [32,37] ];
+
+/* Frequency scales reused across many questions */
+const NEVER_OFTEN = ["Never","Rarely","Sometimes","Often","Very often"];
+const ALMOST_OFTEN = ["Almost never","Rarely","Sometimes","Often","Very often"];
+const COMFORT = ["Very uncomfortable","Somewhat uncomfortable","Neutral","Fairly comfortable","Very comfortable"];
+const SATISF = ["Very unsatisfied","Somewhat unsatisfied","Neutral","Fairly satisfied","Very satisfied"];
+const CONNECT = ["Very disconnected","Somewhat disconnected","Neutral","Fairly connected","Very connected"];
+const OFTEN_NEVER = ["Very often","Often","Sometimes","Rarely","Almost never"]; /* reverse-worded */
+
+/* 37 questions — text + option labels (values 1..5). Wording preserved. */
+const QUESTIONS = [
+  { t: "How grounded and secure do you feel in your daily life?", o: ["Very insecure and ungrounded","Somewhat insecure","Neutral","Fairly grounded","Very grounded and secure"] },
+  { t: "How satisfied are you with your emotional well-being and relationships?", o: SATISF },
+  { t: "How confident do you feel in your personal power and self-esteem?", o: ["Very unconfident","Somewhat unconfident","Neutral","Fairly confident","Very confident"] },
+  { t: "How open is your heart to giving and receiving love?", o: ["Very closed","Somewhat closed","Neutral","Fairly open","Very open"] },
+  { t: "How effectively do you communicate your thoughts and feelings?", o: ["Very ineffectively","Somewhat ineffectively","Neutral","Fairly effectively","Very effectively"] },
+  { t: "How clear is your intuition and ability to see the bigger picture?", o: ["Very unclear","Somewhat unclear","Neutral","Fairly clear","Very clear"] },
+  { t: "How connected do you feel to your spiritual self and the universe?", o: CONNECT },
+  { t: "How often do you feel anxious or fearful in your daily life?", o: OFTEN_NEVER },
+  { t: "How comfortable are you with change and new experiences?", o: COMFORT },
+  { t: "How often do you practice self-care or self-love?", o: NEVER_OFTEN },
+  { t: "How trusting are you of the universe to provide for you?", o: ["Not at all trusting","Somewhat trusting","Neutral","Fairly trusting","Very trusting"] },
+  { t: "How often do you engage in meditation or mindfulness practices?", o: NEVER_OFTEN },
+  { t: "How do you feel about your ability to manifest your desires?", o: ["Very ineffective","Somewhat ineffective","Neutral","Fairly effective","Very effective"] },
+  { t: "How often do you feel gratitude in your life?", o: ALMOST_OFTEN },
+  { t: "How at ease do you feel in social situations?", o: ["Very uneasy","Somewhat uneasy","Neutral","Fairly at ease","Very at ease"] },
+  { t: "How often do you take time to reflect on your thoughts and feelings?", o: NEVER_OFTEN },
+  { t: "How much do you value your individuality and self-expression?", o: ["Not at all","Somewhat","Neutral","Fairly","Very much"] },
+  { t: "How often do you seek new knowledge or experiences?", o: ALMOST_OFTEN },
+  { t: "How often do you feel a sense of belonging in your community?", o: ALMOST_OFTEN },
+  { t: "How connected do you feel to your body?", o: CONNECT },
+  { t: "How often do you feel a sense of compassion for others?", o: ALMOST_OFTEN },
+  { t: "How often do you feel inspired or motivated?", o: ALMOST_OFTEN },
+  { t: "How comfortable are you expressing your emotions?", o: COMFORT },
+  { t: "How often do you experience joy in your daily life?", o: ALMOST_OFTEN },
+  { t: "How often do you feel a sense of purpose in your life?", o: ALMOST_OFTEN },
+  { t: "How often do you feel connected to nature?", o: ALMOST_OFTEN },
+  { t: "How often do you feel a sense of unity with the world around you?", o: ALMOST_OFTEN },
+  { t: "How often do you feel overwhelmed by your responsibilities?", o: OFTEN_NEVER },
+  { t: "How satisfied are you with your ability to set and maintain boundaries?", o: SATISF },
+  { t: "How often do you engage in activities that bring you joy?", o: ALMOST_OFTEN },
+  { t: "How comfortable are you with silence and solitude?", o: COMFORT },
+  { t: "How often do you feel a sense of awe or wonder about the world?", o: ALMOST_OFTEN },
+  { t: "How satisfied are you with your ability to make decisions?", o: SATISF },
+  { t: "How often do you feel a sense of inner peace?", o: ALMOST_OFTEN },
+  { t: "How comfortable are you with uncertainty and change?", o: COMFORT },
+  { t: "How often do you feel connected to your life's purpose?", o: ALMOST_OFTEN },
+  { t: "How satisfied are you with your ability to listen to and trust your intuition?", o: SATISF }
 ];
 
-/* ── Theme toggle ─────────────────────────────────────────────────── */
+/* Map each question index → chakra index (for labelling only; scoring uses SLICES) */
+const Q_CHAKRA = [];
+SLICES.forEach(([s,e], ci) => { for (let i = s; i < e; i++) Q_CHAKRA[i] = ci; });
+
+/* ═══ State & persistence ═════════════════════════════════════════ */
+const TOTAL = QUESTIONS.length;
+const STORE_ANS = 'chakra-answers-v2';
+const STORE_POS = 'chakra-pos-v2';
+let answers = new Array(TOTAL).fill(null);
+let pos = 0;
+
+function loadSaved() {
+  try {
+    const a = JSON.parse(localStorage.getItem(STORE_ANS));
+    if (Array.isArray(a) && a.length === TOTAL) answers = a.map(v => (v >= 1 && v <= 5) ? v : null);
+    const p = parseInt(localStorage.getItem(STORE_POS));
+    if (!isNaN(p) && p >= 0 && p < TOTAL) pos = p;
+  } catch (e) {}
+}
+function save() {
+  try {
+    localStorage.setItem(STORE_ANS, JSON.stringify(answers));
+    localStorage.setItem(STORE_POS, String(pos));
+  } catch (e) {}
+}
+function clearSaved() {
+  try { localStorage.removeItem(STORE_ANS); localStorage.removeItem(STORE_POS); } catch (e) {}
+}
+const answeredCount = () => answers.filter(v => v !== null).length;
+
+/* ═══ Theme ═══════════════════════════════════════════════════════ */
+const themeBtn = document.getElementById('themeToggle');
 (function initTheme() {
   const stored = localStorage.getItem('chakra-theme');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = stored === 'dark' || (!stored && prefersDark);
-  if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
-  updateToggleIcon(isDark);
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  themeBtn.textContent = isDark ? '☀️' : '🌙';
+  document.querySelector('meta[name=theme-color]').setAttribute('content', isDark ? '#0b0916' : '#f4f1fb');
 })();
+themeBtn.addEventListener('click', () => {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('chakra-theme', next);
+  themeBtn.textContent = next === 'dark' ? '☀️' : '🌙';
+  document.querySelector('meta[name=theme-color]').setAttribute('content', next === 'dark' ? '#0b0916' : '#f4f1fb');
+});
 
-function updateToggleIcon(isDark) {
-  document.getElementById('themeToggle').textContent = isDark ? '☀️' : '🌙';
+/* ═══ Screen switching ════════════════════════════════════════════ */
+function show(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
-document.getElementById('themeToggle').addEventListener('click', function () {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  if (isDark) {
-    document.documentElement.setAttribute('data-theme', 'light');
-    localStorage.setItem('chakra-theme', 'light');
-    updateToggleIcon(false);
+/* ═══ Intro ═══════════════════════════════════════════════════════ */
+(function buildIntro() {
+  const spec = document.getElementById('introSpectrum');
+  CHAKRAS.forEach((c, i) => {
+    const s = document.createElement('span');
+    s.style.background = c.color;
+    s.style.animationDelay = (i * 0.08) + 's';
+    spec.appendChild(s);
+  });
+})();
+
+document.getElementById('beginBtn').addEventListener('click', () => {
+  answers = new Array(TOTAL).fill(null);
+  pos = 0; save();
+  startQuiz();
+});
+document.getElementById('resumeBtn').addEventListener('click', startQuiz);
+
+function refreshResumeNote() {
+  const note = document.getElementById('resumeNote');
+  note.hidden = answeredCount() === 0;
+}
+
+/* ═══ Quiz rendering ══════════════════════════════════════════════ */
+function buildRail() {
+  const rail = document.getElementById('rail');
+  rail.innerHTML = '';
+  SLICES.forEach((_, ci) => {
+    const seg = document.createElement('div');
+    seg.className = 'seg';
+    const fill = document.createElement('i');
+    fill.style.background = CHAKRAS[ci].color;
+    seg.appendChild(fill);
+    rail.appendChild(seg);
+  });
+}
+function updateRail() {
+  const segs = document.querySelectorAll('#rail .seg i');
+  SLICES.forEach(([s,e], ci) => {
+    const total = e - s;
+    let done = 0;
+    for (let i = s; i < e; i++) if (answers[i] !== null) done++;
+    if (segs[ci]) segs[ci].style.width = Math.round((done / total) * 100) + '%';
+  });
+}
+
+function startQuiz() {
+  buildRail();
+  show('screen-quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[pos];
+  const chakra = CHAKRAS[Q_CHAKRA[pos]];
+  const card = document.querySelector('.qcard');
+  card.style.setProperty('--chakra', chakra.color);
+  card.style.setProperty('--chakra-soft', hexA(chakra.color, 0.14));
+
+  document.getElementById('qNow').textContent = pos + 1;
+  document.getElementById('qAnswered').textContent = answeredCount() + ' answered';
+
+  const tag = document.getElementById('chakraTag');
+  tag.style.color = chakra.color;
+  tag.style.background = hexA(chakra.color, 0.13);
+  tag.innerHTML = `<span class="glyph" style="color:${chakra.color}">${chakra.symbol}</span>${chakra.name} · ${chakra.sanskrit}`;
+
+  document.getElementById('questionText').textContent = q.t;
+
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  q.o.forEach((label, i) => {
+    const val = i + 1;
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'option';
+    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-checked', answers[pos] === val ? 'true' : 'false');
+    b.style.setProperty('--chakra', chakra.color);
+    b.style.setProperty('--chakra-soft', hexA(chakra.color, 0.16));
+    b.innerHTML = `<span class="key">${val}</span><span class="label">${label}</span>`;
+    b.addEventListener('click', () => choose(val));
+    opts.appendChild(b);
+  });
+
+  const prev = document.getElementById('prevBtn');
+  const next = document.getElementById('nextBtn');
+  prev.disabled = pos === 0;
+  prev.style.visibility = pos === 0 ? 'hidden' : 'visible';
+  syncNextBtn();
+  updateRail();
+}
+
+function syncNextBtn() {
+  const next = document.getElementById('nextBtn');
+  const isLast = pos === TOTAL - 1;
+  if (isLast) {
+    next.textContent = 'Reveal my reading ✦';
+    next.disabled = answeredCount() !== TOTAL;
   } else {
-    document.documentElement.setAttribute('data-theme', 'dark');
-    localStorage.setItem('chakra-theme', 'dark');
-    updateToggleIcon(true);
+    next.textContent = 'Next →';
+    next.disabled = answers[pos] === null;
+  }
+}
+
+let advanceTimer = null;
+function choose(val) {
+  answers[pos] = val;
+  save();
+  document.querySelectorAll('#options .option').forEach((el, i) => {
+    el.setAttribute('aria-checked', (i + 1) === val ? 'true' : 'false');
+  });
+  document.getElementById('qAnswered').textContent = answeredCount() + ' answered';
+  updateRail();
+  syncNextBtn();
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  clearTimeout(advanceTimer);
+  if (pos < TOTAL - 1) {
+    advanceTimer = setTimeout(() => { pos++; save(); renderQuestion(); }, reduce ? 120 : 340);
+  }
+}
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  clearTimeout(advanceTimer);
+  if (pos > 0) { pos--; save(); renderQuestion(); }
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  clearTimeout(advanceTimer);
+  if (pos === TOTAL - 1) { finish(); return; }
+  if (answers[pos] !== null && pos < TOTAL - 1) { pos++; save(); renderQuestion(); }
+});
+
+/* Keyboard: 1-5 pick, arrows navigate, Enter advances */
+document.addEventListener('keydown', (e) => {
+  if (!document.getElementById('screen-quiz').classList.contains('active')) return;
+  if (e.key >= '1' && e.key <= '5') {
+    const idx = parseInt(e.key) - 1;
+    if (idx < QUESTIONS[pos].o.length) { e.preventDefault(); choose(idx + 1); }
+  } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
+    const next = document.getElementById('nextBtn');
+    if (!next.disabled) { e.preventDefault(); next.click(); }
+  } else if (e.key === 'ArrowLeft') {
+    if (pos > 0) { e.preventDefault(); document.getElementById('prevBtn').click(); }
   }
 });
 
-/* ── Progress tracking ────────────────────────────────────────────── */
-function onAnswer(select) {
-  if (select.value) {
-    select.classList.add('answered');
-  } else {
-    select.classList.remove('answered');
-  }
-  updateProgress();
-}
-
-function updateProgress() {
-  let answered = 0;
-  for (let i = 1; i <= 37; i++) {
-    const el = document.getElementById(`q${i}`);
-    if (el && el.value) answered++;
-  }
-  const pct = Math.round((answered / 37) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressText').textContent = `${answered} / 37 answered`;
-  const track = document.querySelector('.progress-bar-track');
-  if (track) track.setAttribute('aria-valuenow', answered);
-}
-
-/* ── Main analysis ────────────────────────────────────────────────── */
-function analyzeChakras() {
-  const scores = [];
-  for (let i = 1; i <= 37; i++) {
-    const val = parseInt(document.getElementById(`q${i}`).value);
-    if (isNaN(val)) {
-      alert('Please answer all 37 questions before analysing.');
-      return;
-    }
-    scores.push(val);
-  }
-
-  const resultsEl = document.getElementById('results');
-  resultsEl.innerHTML = '';
-
-  const imbalanced = [];
-
-  CHAKRA_QUESTION_SLICES.forEach(([start, end], idx) => {
-    const slice = scores.slice(start, end);
-    const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
-    if (avg <= 3) {
-      imbalanced.push({ chakra: chakras[idx], avg });
-    }
+/* ═══ Results ═════════════════════════════════════════════════════ */
+function finish() {
+  const scored = SLICES.map(([s,e], ci) => {
+    const slice = answers.slice(s, e);
+    const avg = slice.reduce((a,b) => a + (b||0), 0) / slice.length;
+    return { chakra: CHAKRAS[ci], avg, attention: avg <= 3 };
   });
+  const imbalanced = scored.filter(x => x.attention);
+  const el = document.getElementById('results');
+
+  let html = `
+    <div class="results-hero">
+      <span class="eyebrow">Your reading</span>
+      <h2 id="resultsTitle">Your Chakra Reading</h2>
+      <p>${imbalanced.length === 0
+        ? 'All seven centres appear to be in balance.'
+        : `${imbalanced.length} centre${imbalanced.length > 1 ? 's' : ''} may benefit from attention.`}</p>
+    </div>`;
+
+  /* Overview column — all 7 */
+  html += `<div class="glass overview"><h3>Energy overview · all seven centres</h3>`;
+  scored.forEach(({ chakra, avg, attention }) => {
+    const pct = Math.round((avg / 5) * 100);
+    html += `
+      <div class="ov-row" style="--chakra:${chakra.color};--chakra-soft:${hexA(chakra.color,0.16)}">
+        <span class="ov-orb" style="color:${chakra.color}">${chakra.symbol}</span>
+        <span class="ov-info">
+          <span class="ov-name">${chakra.name}</span><br>
+          <span class="ov-sanskrit">${chakra.sanskrit}</span>
+        </span>
+        <span class="ov-status ${attention ? 'attention' : 'balanced'}">${attention ? 'Needs attention' : 'Balanced'} · ${avg.toFixed(1)}</span>
+        <span class="ov-meter"><i style="background:${chakra.color}" data-w="${pct}"></i></span>
+      </div>`;
+  });
+  html += `</div>`;
 
   if (imbalanced.length === 0) {
-    resultsEl.innerHTML = `
-      <div class="all-balanced">
-        <div class="balance-icon">🌸</div>
-        <p>All your chakras appear well-balanced.<br>Keep nurturing your current practices!</p>
-        <button class="btn-secondary" onclick="resetQuiz()" style="margin: var(--sp-6) auto 0; display:flex;">↩ Retake Quiz</button>
+    html += `
+      <div class="glass all-balanced">
+        <span class="icon">🌸</span>
+        <h3>Beautifully in balance</h3>
+        <p>Every energy centre appears well-supported. Keep nurturing the practices that are working for you.</p>
       </div>`;
-    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    return;
+  } else {
+    html += `<p class="section-lead">Centres to nurture</p>`;
+    imbalanced.forEach(({ chakra, avg }, i) => {
+      const pct = Math.round((avg / 5) * 100);
+      html += `
+        <div class="glass chakra-result" style="--chakra:${chakra.color};--chakra-soft:${hexA(chakra.color,0.14)};animation-delay:${0.06 * i}s">
+          <div class="cr-head">
+            <span class="cr-orb"><span class="ring"></span><span class="ring r2"></span><span style="color:${chakra.color};display:inline-flex">${chakra.symbol}</span></span>
+            <span class="cr-title"><h3>${chakra.name}</h3><span class="cr-loc">${chakra.location}</span></span>
+            <span class="cr-badge">${chakra.sanskrit}</span>
+          </div>
+          <div class="cr-score">
+            <span class="lbl">Energy level</span>
+            <span class="track"><span class="fill" data-w="${pct}"></span></span>
+            <span class="val">${avg.toFixed(1)} / 5</span>
+          </div>
+          <div class="cr-section"><h4>About this centre</h4><p class="cr-desc">${chakra.description}</p></div>
+          <div class="cr-section"><h4>Signs of imbalance</h4><ul class="cr-list">${chakra.imbalanceSigns.map(s => `<li>${s}</li>`).join('')}</ul></div>
+          <div class="cr-section"><h4>Balancing practices</h4><ul class="cr-list tips">${chakra.advice.map(a => `<li>${a}</li>`).join('')}</ul></div>
+        </div>`;
+    });
   }
 
-  /* Results header */
-  const header = document.createElement('div');
-  header.className = 'results-header';
-  header.innerHTML = `
-    <p class="results-title">Your Chakra Reading</p>
-    <p class="results-subtitle">${imbalanced.length} chakra${imbalanced.length > 1 ? 's' : ''} may benefit from attention</p>`;
-  resultsEl.appendChild(header);
+  html += `
+    <div class="results-actions">
+      <button class="btn btn-primary" id="retakeBtn">↺ Retake assessment</button>
+      <button class="btn btn-ghost" id="reviewBtn">Review answers</button>
+    </div>
+    <p class="footer-note">A reflective wellness tool for self-awareness — not a substitute for professional medical, psychological, or spiritual care.</p>`;
 
-  /* Chakra result cards */
-  imbalanced.forEach(({ chakra, avg }) => {
-    const pct = Math.round((avg / 5) * 100);
-    const card = document.createElement('div');
-    card.className = 'chakra-result';
-    card.style.borderLeftColor = chakra.color;
+  el.innerHTML = html;
+  show('screen-results');
 
-    card.innerHTML = `
-      <div class="chakra-result-header">
-        <div class="chakra-symbol-wrap" style="background:${chakra.colorLight};">
-          <span class="ring"  style="border-color:${chakra.color};"></span>
-          <span class="ring ring2" style="border-color:${chakra.color};"></span>
-          ${chakra.symbol}
-        </div>
-        <div class="chakra-name">
-          <h3>${chakra.name}</h3>
-          <span class="chakra-location">${chakra.location}</span>
-        </div>
-        <div class="chakra-score-badge" style="color:${chakra.color}; border-color:${chakra.color}; background:${chakra.colorLight};">
-          ${chakra.sanskrit}
-        </div>
-      </div>
+  /* Animate meters after paint */
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('#results .ov-meter i, #results .cr-score .fill').forEach(i => {
+      i.style.width = i.getAttribute('data-w') + '%';
+    });
+  }));
 
-      <div class="score-bar-wrap" aria-label="Energy score">
-        <span class="score-bar-label">Energy level</span>
-        <div class="score-bar-track">
-          <div class="score-bar-fill" style="width:${pct}%; background:${chakra.color};"></div>
-        </div>
-        <span class="score-value">${avg.toFixed(1)}/5</span>
-      </div>
-
-      <div class="result-section">
-        <p class="result-section-title">About this chakra</p>
-        <p class="chakra-description">${chakra.description}</p>
-      </div>
-
-      <div class="result-section">
-        <p class="result-section-title">Signs of imbalance</p>
-        <ul class="chakra-signs">
-          ${chakra.imbalanceSigns.map(s => `<li>${s}</li>`).join('')}
-        </ul>
-      </div>
-
-      <div class="result-section">
-        <p class="result-section-title">Balancing practices</p>
-        <ul class="chakra-tips">
-          ${chakra.advice.map(a => `<li>${a}</li>`).join('')}
-        </ul>
-      </div>`;
-
-    resultsEl.appendChild(card);
-  });
-
-  /* Retake button */
-  const retake = document.createElement('div');
-  retake.style.textAlign = 'center';
-  retake.innerHTML = `<button class="btn-secondary" onclick="resetQuiz()">↩ Retake Quiz</button>`;
-  resultsEl.appendChild(retake);
-
-  resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('retakeBtn').addEventListener('click', resetQuiz);
+  document.getElementById('reviewBtn').addEventListener('click', () => { pos = 0; save(); startQuiz(); });
 }
 
-/* ── Reset ────────────────────────────────────────────────────────── */
 function resetQuiz() {
-  for (let i = 1; i <= 37; i++) {
-    const el = document.getElementById(`q${i}`);
-    el.value = '';
-    el.classList.remove('answered');
-  }
-  document.getElementById('results').innerHTML = '';
-  updateProgress();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  answers = new Array(TOTAL).fill(null);
+  pos = 0; clearSaved();
+  refreshResumeNote();
+  show('screen-intro');
 }
+
+/* ═══ Helpers ═════════════════════════════════════════════════════ */
+function hexA(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return `rgba(${r},${g},${b},${a})`;
+}
+
+/* ═══ Boot ════════════════════════════════════════════════════════ */
+loadSaved();
+refreshResumeNote();
 </script>
 </body>
 </html>

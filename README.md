@@ -8,12 +8,15 @@
 
 ## Features
 
-- **37-question quiz** mapping to all 7 chakras (Root → Crown)
-- **Animated result cards** with pulsing chakra symbols, a score bar, chakra description, signs of imbalance, and balancing practices
-- **Dark mode** — automatically follows your OS preference; override with the ☀️/🌙 toggle in the header (preference is saved in `localStorage`)
-- **Progress indicator** — tracks how many questions you've answered in real time
-- **Mobile-first responsive design** — safe-area aware, works on phones, tablets, and desktops
-- **No dependencies** — pure HTML/CSS/JavaScript, no build step required
+- **Guided one-question-at-a-time flow** — a welcome screen, then each of the 37 questions on its own focused card instead of one long list of dropdowns
+- **Tappable Likert answers** with keyboard support (press `1`–`5` to answer, `←`/`→` to move) and gentle auto-advance
+- **Auto-saved progress** — answers and position are persisted to `localStorage`, so you can close the tab and resume where you left off
+- **Per-chakra progress rail** — a seven-segment bar fills as you complete each energy centre's questions
+- **Whole-system results** — an *energy overview* of all 7 chakras (balanced vs. needs-attention, with meters) followed by detailed cards for the centres that need attention: chakra symbol, energy level, description, signs of imbalance, and balancing practices
+- **Meditative visual design** — ambient aurora background, glassmorphism cards, serif display type, and per-chakra colour accents
+- **Dark & light themes** — automatically follows your OS preference; override with the ☀️/🌙 toggle (saved in `localStorage`)
+- **Accessible & responsive** — radiogroup semantics, focus-visible states, `prefers-reduced-motion` support, safe-area aware, mobile-first
+- **No dependencies** — a single self-contained `index.html`, no build step required
 
 ---
 
@@ -23,10 +26,10 @@ The app uses CSS custom properties (design tokens) for all colours, spacing, and
 
 | Token | Light | Dark |
 |---|---|---|
-| `--bg-page` | `#f0edf8` | `#0f0d1a` |
-| `--bg-card` | `#ffffff` | `#1c1830` |
+| `--bg-base` | `#f4f1fb` | `#0b0916` |
+| `--surface` | `rgba(255,255,255,0.72)` | `rgba(28,23,48,0.66)` |
 | `--accent`  | `#7c3aed` | `#a78bfa` |
-| `--text-primary` | `#1a1030` | `#f0edf8` |
+| `--text-primary` | `#241a3d` | `#f2eefb` |
 
 Dark mode is applied via:
 1. `@media (prefers-color-scheme: dark)` — respects OS/browser setting automatically.
