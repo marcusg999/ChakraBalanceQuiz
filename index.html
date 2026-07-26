@@ -790,8 +790,20 @@ const CHAKRAS = [
   }
 ];
 
-/* Scoring slices — unchanged from the original logic */
-const SLICES = [ [0,5], [5,10], [10,15], [15,21], [21,26], [26,32], [32,37] ];
+/* ── Question → chakra mapping ────────────────────────────────────
+   Each question maps to the chakra it actually relates to by theme,
+   not by contiguous position. Chakra index:
+   0 Root · 1 Sacral · 2 Solar Plexus · 3 Heart · 4 Throat · 5 Third Eye · 6 Crown.
+   A chakra's score is the average of its mapped answers (1–5); an
+   average of 3 or below flags it as needing attention. */
+const Q_CHAKRA = [
+  0, 1, 2, 3, 4, 5, 6,   /* Q1–7  : one sweep across all seven centres */
+  0, 1, 3, 6, 5, 2, 3,   /* Q8–14 */
+  2, 5, 4, 5, 0, 0, 3,   /* Q15–21 */
+  1, 4, 1, 2, 0, 6, 2,   /* Q22–28 */
+  2, 1, 6, 6, 2, 3, 1,   /* Q29–35 */
+  6, 5                   /* Q36–37 */
+];
 
 /* Frequency scales reused across many questions */
 const NEVER_OFTEN = ["Never","Rarely","Sometimes","Often","Very often"];
@@ -842,14 +854,16 @@ const QUESTIONS = [
   { t: "How satisfied are you with your ability to listen to and trust your intuition?", o: SATISF }
 ];
 
-/* Map each question index → chakra index (for labelling only; scoring uses SLICES) */
-const Q_CHAKRA = [];
-SLICES.forEach(([s,e], ci) => { for (let i = s; i < e; i++) Q_CHAKRA[i] = ci; });
+/* Presentation order: group questions by chakra (Root → Crown) so the
+   assessment flows through one energy centre at a time. Scoring is a
+   per-chakra average and is independent of this order. */
+const ORDER = [];
+CHAKRAS.forEach((_, ci) => Q_CHAKRA.forEach((c, qi) => { if (c === ci) ORDER.push(qi); }));
 
 /* ═══ State & persistence ═════════════════════════════════════════ */
 const TOTAL = QUESTIONS.length;
-const STORE_ANS = 'chakra-answers-v2';
-const STORE_POS = 'chakra-pos-v2';
+const STORE_ANS = 'chakra-answers-v3';
+const STORE_POS = 'chakra-pos-v3';
 let answers = new Array(TOTAL).fill(null);
 let pos = 0;
 
@@ -925,7 +939,7 @@ function refreshResumeNote() {
 function buildRail() {
   const rail = document.getElementById('rail');
   rail.innerHTML = '';
-  SLICES.forEach((_, ci) => {
+  CHAKRAS.forEach((_, ci) => {
     const seg = document.createElement('div');
     seg.className = 'seg';
     const fill = document.createElement('i');
@@ -936,12 +950,10 @@ function buildRail() {
 }
 function updateRail() {
   const segs = document.querySelectorAll('#rail .seg i');
-  SLICES.forEach(([s,e], ci) => {
-    const total = e - s;
-    let done = 0;
-    for (let i = s; i < e; i++) if (answers[i] !== null) done++;
-    if (segs[ci]) segs[ci].style.width = Math.round((done / total) * 100) + '%';
-  });
+  const total = new Array(CHAKRAS.length).fill(0);
+  const done = new Array(CHAKRAS.length).fill(0);
+  Q_CHAKRA.forEach((ci, qi) => { total[ci]++; if (answers[qi] !== null) done[ci]++; });
+  segs.forEach((seg, ci) => { seg.style.width = Math.round((done[ci] / total[ci]) * 100) + '%'; });
 }
 
 function startQuiz() {
@@ -951,8 +963,9 @@ function startQuiz() {
 }
 
 function renderQuestion() {
-  const q = QUESTIONS[pos];
-  const chakra = CHAKRAS[Q_CHAKRA[pos]];
+  const qi = ORDER[pos];
+  const q = QUESTIONS[qi];
+  const chakra = CHAKRAS[Q_CHAKRA[qi]];
   const card = document.querySelector('.qcard');
   card.style.setProperty('--chakra', chakra.color);
   card.style.setProperty('--chakra-soft', hexA(chakra.color, 0.14));
@@ -975,7 +988,7 @@ function renderQuestion() {
     b.type = 'button';
     b.className = 'option';
     b.setAttribute('role', 'radio');
-    b.setAttribute('aria-checked', answers[pos] === val ? 'true' : 'false');
+    b.setAttribute('aria-checked', answers[qi] === val ? 'true' : 'false');
     b.style.setProperty('--chakra', chakra.color);
     b.style.setProperty('--chakra-soft', hexA(chakra.color, 0.16));
     b.innerHTML = `<span class="key">${val}</span><span class="label">${label}</span>`;
@@ -999,13 +1012,13 @@ function syncNextBtn() {
     next.disabled = answeredCount() !== TOTAL;
   } else {
     next.textContent = 'Next →';
-    next.disabled = answers[pos] === null;
+    next.disabled = answers[ORDER[pos]] === null;
   }
 }
 
 let advanceTimer = null;
 function choose(val) {
-  answers[pos] = val;
+  answers[ORDER[pos]] = val;
   save();
   document.querySelectorAll('#options .option').forEach((el, i) => {
     el.setAttribute('aria-checked', (i + 1) === val ? 'true' : 'false');
@@ -1028,7 +1041,7 @@ document.getElementById('prevBtn').addEventListener('click', () => {
 document.getElementById('nextBtn').addEventListener('click', () => {
   clearTimeout(advanceTimer);
   if (pos === TOTAL - 1) { finish(); return; }
-  if (answers[pos] !== null && pos < TOTAL - 1) { pos++; save(); renderQuestion(); }
+  if (answers[ORDER[pos]] !== null && pos < TOTAL - 1) { pos++; save(); renderQuestion(); }
 });
 
 /* Keyboard: 1-5 pick, arrows navigate, Enter advances */
@@ -1036,7 +1049,7 @@ document.addEventListener('keydown', (e) => {
   if (!document.getElementById('screen-quiz').classList.contains('active')) return;
   if (e.key >= '1' && e.key <= '5') {
     const idx = parseInt(e.key) - 1;
-    if (idx < QUESTIONS[pos].o.length) { e.preventDefault(); choose(idx + 1); }
+    if (idx < QUESTIONS[ORDER[pos]].o.length) { e.preventDefault(); choose(idx + 1); }
   } else if (e.key === 'ArrowRight' || e.key === 'Enter') {
     const next = document.getElementById('nextBtn');
     if (!next.disabled) { e.preventDefault(); next.click(); }
@@ -1047,10 +1060,11 @@ document.addEventListener('keydown', (e) => {
 
 /* ═══ Results ═════════════════════════════════════════════════════ */
 function finish() {
-  const scored = SLICES.map(([s,e], ci) => {
-    const slice = answers.slice(s, e);
-    const avg = slice.reduce((a,b) => a + (b||0), 0) / slice.length;
-    return { chakra: CHAKRAS[ci], avg, attention: avg <= 3 };
+  const scored = CHAKRAS.map((chakra, ci) => {
+    const vals = [];
+    Q_CHAKRA.forEach((c, qi) => { if (c === ci) vals.push(answers[qi] || 0); });
+    const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+    return { chakra, avg, attention: avg <= 3 };
   });
   const imbalanced = scored.filter(x => x.attention);
   const el = document.getElementById('results');

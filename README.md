@@ -39,19 +39,19 @@ Dark mode is applied via:
 
 ## Scoring Logic
 
-Questions are grouped into chakra buckets (preserving the original logic):
+Each question is mapped to the chakra it actually relates to **by theme** (using the original question numbering), rather than by contiguous position:
 
 | Chakra | Questions |
 |---|---|
-| Root (Muladhara) | 1–5 |
-| Sacral (Svadhisthana) | 6–10 |
-| Solar Plexus (Manipura) | 11–15 |
-| Heart (Anahata) | 16–21 |
-| Throat (Vishuddha) | 22–26 |
-| Third Eye (Ajna) | 27–32 |
-| Crown (Sahasrara) | 33–37 |
+| Root (Muladhara) | 1, 8, 19, 20, 26 |
+| Sacral (Svadhisthana) | 2, 9, 22, 24, 30, 35 |
+| Solar Plexus (Manipura) | 3, 13, 15, 25, 28, 29, 33 |
+| Heart (Anahata) | 4, 10, 14, 21, 34 |
+| Throat (Vishuddha) | 5, 17, 23 |
+| Third Eye (Ajna) | 6, 12, 16, 18, 37 |
+| Crown (Sahasrara) | 7, 11, 27, 31, 32, 36 |
 
-Each answer is scored 1–5. If a chakra's average score ≤ 3 it is shown in the results as needing attention.
+Each answer is scored 1–5. A chakra's score is the **average of its mapped questions**; if that average is 3 or below, the chakra is shown in the results as needing attention. In the app, questions are **presented grouped by chakra** (Root → Crown) so the assessment flows through one energy centre at a time; the grouping does not affect scores.
 
 ---
 
